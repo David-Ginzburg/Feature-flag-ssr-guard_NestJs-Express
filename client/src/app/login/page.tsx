@@ -20,10 +20,11 @@ export default function LoginPage() {
 			});
 
 			if (response.ok) {
-				router.push("/");
-				router.refresh();
+				// Принудительно обновляем страницу для обновления Server Components
+				window.location.href = "/";
 			} else {
-				setError("Invalid credentials");
+				const errorData = await response.json();
+				setError(errorData.message || "Invalid credentials");
 			}
 		} catch (err) {
 			setError("Login failed");
