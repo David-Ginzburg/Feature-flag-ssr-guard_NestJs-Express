@@ -1,13 +1,12 @@
+import { Suspense } from "react";
 import { getFeatureFlags } from "@/lib/flags";
 import AnalyticsWidget from "@/components/AnalyticsWidget";
 
-export default async function HomePage() {
+async function FeatureFlagsContent() {
 	const flags = await getFeatureFlags();
 
 	return (
-		<div className="container mx-auto p-8">
-			<h1 className="text-3xl font-bold mb-8">Welcome to Feature Flags Demo</h1>
-
+		<>
 			{flags.canViewAnalytics && <AnalyticsWidget />}
 
 			<div className="mt-8">
@@ -19,6 +18,18 @@ export default async function HomePage() {
 					<li>Settings Access: {flags.canAccessSettings ? "✅" : "❌"}</li>
 				</ul>
 			</div>
+		</>
+	);
+}
+
+export default function HomePage() {
+	return (
+		<div className="container mx-auto p-8">
+			<h1 className="text-3xl font-bold mb-8">Welcome to Feature Flags Demo</h1>
+
+			<Suspense fallback={<div>Loading feature flags...</div>}>
+				<FeatureFlagsContent />
+			</Suspense>
 		</div>
 	);
 }

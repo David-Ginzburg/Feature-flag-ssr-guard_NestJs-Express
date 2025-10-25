@@ -1,13 +1,12 @@
+import { Suspense } from "react";
 import { getFeatureFlags } from "@/lib/flags";
 import AdminPanel from "@/components/AdminPanel";
 
-export default async function DashboardPage() {
+async function DashboardContent() {
 	const flags = await getFeatureFlags();
 
 	return (
-		<div className="container mx-auto p-8">
-			<h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-
+		<>
 			{flags.showAdminDashboard ? (
 				<AdminPanel />
 			) : (
@@ -16,6 +15,18 @@ export default async function DashboardPage() {
 					<p>Welcome to your dashboard! You have standard user access.</p>
 				</div>
 			)}
+		</>
+	);
+}
+
+export default function DashboardPage() {
+	return (
+		<div className="container mx-auto p-8">
+			<h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+
+			<Suspense fallback={<div>Loading dashboard...</div>}>
+				<DashboardContent />
+			</Suspense>
 		</div>
 	);
 }
