@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LogoutPage() {
+	const router = useRouter();
+
 	useEffect(() => {
 		// Вызываем API logout для очистки cookie на сервере
 		const logout = async () => {
@@ -14,13 +17,13 @@ export default function LogoutPage() {
 			} catch (error) {
 				console.error("Logout error:", error);
 			} finally {
-				// Перенаправляем на страницу входа
-				window.location.href = "/login";
+				// Используем Next.js router для редиректа
+				router.replace("/login");
 			}
 		};
 
 		logout();
-	}, []);
+	}, [router]);
 
 	return (
 		<div className="min-h-screen flex items-center justify-center">

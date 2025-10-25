@@ -25,8 +25,8 @@ export default function LoginPage() {
 			});
 
 			if (response.ok) {
-				// Принудительно обновляем страницу для обновления Server Components
-				window.location.href = "/";
+				// Используем Next.js router для редиректа
+				router.push("/");
 			} else {
 				const errorData = await response.json();
 				setError(errorData.message || "Invalid credentials");
@@ -74,9 +74,11 @@ export default function LoginPage() {
 					)}
 				</button>
 				<p className="text-center mt-4">
-					<a 
-						href="/register" 
-						className={`text-blue-500 ${isLoading ? 'pointer-events-none opacity-50' : 'hover:underline'}`}
+					<a
+						href="/register"
+						className={`text-blue-500 ${
+							isLoading ? "pointer-events-none opacity-50" : "hover:underline"
+						}`}
 					>
 						Register
 					</a>

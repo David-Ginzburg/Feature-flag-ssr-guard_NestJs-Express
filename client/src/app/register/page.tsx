@@ -81,9 +81,11 @@ export default function RegisterPage() {
 					)}
 				</button>
 				<p className="text-center mt-4">
-					<a 
-						href="/login" 
-						className={`text-blue-500 ${isLoading ? 'pointer-events-none opacity-50' : 'hover:underline'}`}
+					<a
+						href="/login"
+						className={`text-blue-500 ${
+							isLoading ? "pointer-events-none opacity-50" : "hover:underline"
+						}`}
 					>
 						Login
 					</a>
