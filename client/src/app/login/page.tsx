@@ -15,7 +15,7 @@ export default function LoginPage() {
 		e.preventDefault();
 		setIsLoading(true);
 		setError("");
-		
+
 		try {
 			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
 				method: "POST",
@@ -59,8 +59,8 @@ export default function LoginPage() {
 					className="w-full p-3 border rounded mb-4"
 					required
 				/>
-				<button 
-					type="submit" 
+				<button
+					type="submit"
 					disabled={isLoading}
 					className="w-full bg-blue-500 text-white p-3 rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
 				>
@@ -74,8 +74,11 @@ export default function LoginPage() {
 					)}
 				</button>
 				<p className="text-center mt-4">
-					<a href="/register" className="text-blue-500">
-						Register instead
+					<a 
+						href="/register" 
+						className={`text-blue-500 ${isLoading ? 'pointer-events-none opacity-50' : 'hover:underline'}`}
+					>
+						Register
 					</a>
 				</p>
 			</form>
