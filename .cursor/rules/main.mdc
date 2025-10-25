@@ -1,0 +1,8 @@
+---
+alwaysApply: true
+---
+
+All architectural rules described in @docs/arch-rules.md
+All business requirements described in @requirements.md
+
+When changing the project, you have to add descriptions of the architecture to the @docs/architecture.md document and use it in your work.
