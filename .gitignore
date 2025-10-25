@@ -27,4 +27,7 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
-server/cookies.txt
+
+# Cookie files (contain sensitive data)
+cookies.txt
+*/cookies.txt
