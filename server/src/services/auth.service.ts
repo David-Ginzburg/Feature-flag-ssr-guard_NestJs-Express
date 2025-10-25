@@ -5,6 +5,11 @@ import { Role } from "@prisma/client";
 
 export class AuthService {
 	static async register(email: string, password: string, role: Role) {
+		// Валидация роли
+		if (!Object.values(Role).includes(role)) {
+			throw new Error("Invalid role");
+		}
+
 		const hashedPassword = await bcrypt.hash(password, 12);
 		return await prisma.user.create({
 			data: { email, password: hashedPassword, role },
@@ -26,7 +31,7 @@ export class AuthService {
 
 	static getFeatureFlags(role: Role) {
 		const flags = {
-			canViewAnalytics: role === "ADMIN" || role === "EDITOR",
+			canViewAnalytics: role === "ADMIN" || role === "EDITOR" || role === "VIEWER",
 			canEditContent: role === "ADMIN" || role === "EDITOR",
 			showAdminDashboard: role === "ADMIN",
 			canAccessSettings: role === "ADMIN" || role === "EDITOR",

@@ -3,6 +3,7 @@
 ## Необходимые .env файлы:
 
 ### 1. Корневая папка - `.env`
+
 ```bash
 # Database
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feature_flags_db"
@@ -15,12 +16,14 @@ NEXT_PUBLIC_API_URL="http://localhost:4000"
 ```
 
 ### 2. Папка server - `.env` (уже существует)
+
 ```bash
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feature_flags_db"
 JWT_SECRET="your-super-secret-jwt-key-here"
 ```
 
 ### 3. Папка client - `.env.local`
+
 ```bash
 NEXT_PUBLIC_API_URL="http://localhost:4000"
 ```
@@ -47,3 +50,9 @@ docker-compose up
 cd server && npm run dev
 cd client && npm run dev
 ```
+
+## Доступ к приложению:
+
+- **Frontend**: http://localhost:3030
+- **Backend API**: http://localhost:4000
+- **PostgreSQL**: localhost:5432

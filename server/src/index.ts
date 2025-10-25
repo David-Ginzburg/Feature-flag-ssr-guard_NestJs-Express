@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -9,7 +10,7 @@ const PORT = process.env.PORT || 4000;
 app.use(
 	cors({
 		origin:
-			process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : "http://localhost:3000",
+			process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : "http://localhost:3030",
 		credentials: true,
 	})
 );
