@@ -14,8 +14,8 @@ export default function LogoutPage() {
 			} catch (error) {
 				console.error("Logout error:", error);
 			} finally {
-				// Принудительно обновляем страницу
-				window.location.href = "/";
+				// Перенаправляем на страницу входа
+				window.location.href = "/login";
 			}
 		};
 
@@ -26,7 +26,7 @@ export default function LogoutPage() {
 		<div className="min-h-screen flex items-center justify-center">
 			<div className="text-center">
 				<h1 className="text-2xl font-bold mb-4">Выход из системы...</h1>
-				<p>Вы будете перенаправлены на главную страницу.</p>
+				<p>Вы будете перенаправлены на страницу входа.</p>
 			</div>
 		</div>
 	);

@@ -2,15 +2,20 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Spinner from "@/components/Spinner";
 
 export default function LoginPage() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+		setIsLoading(true);
+		setError("");
+		
 		try {
 			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
 				method: "POST",
@@ -28,6 +33,8 @@ export default function LoginPage() {
 			}
 		} catch (err) {
 			setError("Login failed");
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -52,8 +59,19 @@ export default function LoginPage() {
 					className="w-full p-3 border rounded mb-4"
 					required
 				/>
-				<button type="submit" className="w-full bg-blue-500 text-white p-3 rounded">
-					Login
+				<button 
+					type="submit" 
+					disabled={isLoading}
+					className="w-full bg-blue-500 text-white p-3 rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+				>
+					{isLoading ? (
+						<>
+							<Spinner size="sm" className="mr-2" />
+							Вход...
+						</>
+					) : (
+						"Login"
+					)}
 				</button>
 				<p className="text-center mt-4">
 					<a href="/register" className="text-blue-500">

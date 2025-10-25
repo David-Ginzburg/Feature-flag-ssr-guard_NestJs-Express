@@ -2,16 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Spinner from "@/components/Spinner";
 
 export default function RegisterPage() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [role, setRole] = useState("VIEWER");
 	const [error, setError] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+		setIsLoading(true);
+		setError("");
+		
 		try {
 			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`, {
 				method: "POST",
@@ -24,8 +29,10 @@ export default function RegisterPage() {
 			} else {
 				setError("Registration failed");
 			}
-		} catch (err) {
+		} catch {
 			setError("Registration failed");
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -59,8 +66,19 @@ export default function RegisterPage() {
 					<option value="EDITOR">Editor</option>
 					<option value="ADMIN">Admin</option>
 				</select>
-				<button type="submit" className="w-full bg-blue-500 text-white p-3 rounded">
-					Register
+				<button 
+					type="submit" 
+					disabled={isLoading}
+					className="w-full bg-blue-500 text-white p-3 rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+				>
+					{isLoading ? (
+						<>
+							<Spinner size="sm" className="mr-2" />
+							Регистрация...
+						</>
+					) : (
+						"Register"
+					)}
 				</button>
 				<p className="text-center mt-4">
 					<a href="/login" className="text-blue-500">
