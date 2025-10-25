@@ -205,11 +205,42 @@ services:
 - **Хэширование паролей** с bcrypt
 - **CORS** настроен для продакшена
 
+### Настройки Cookie
+
+#### Development (локальная разработка)
+
+```typescript
+{
+  httpOnly: true,
+  secure: false,        // HTTP разрешен для localhost
+  sameSite: "lax",     // Более мягкие ограничения
+  path: "/"
+}
+```
+
+#### Production (продакшен)
+
+```typescript
+{
+  httpOnly: true,
+  secure: true,         // Только HTTPS
+  sameSite: "strict",  // Строгие ограничения CSRF
+  path: "/"
+}
+```
+
 ### Авторизация
 
 - **Роли пользователей** определяют доступ
 - **Фича-флаги** контролируют UI
 - **Серверная валидация** всех запросов
+
+### Защита от атак
+
+- **CSRF**: SameSite cookies
+- **XSS**: HttpOnly cookies
+- **Man-in-the-middle**: Secure flag в production
+- **Session hijacking**: JWT с ограниченным временем жизни
 
 ## Производительность
 

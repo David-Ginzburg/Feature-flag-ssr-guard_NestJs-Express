@@ -1,6 +1,9 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { AuthService } from "../services/auth.service";
 import { Role } from "@prisma/client";
+
+// Валидация переменных окружения
+const isProduction = process.env.NODE_ENV === "production";
 
 export class AuthController {
 	static async register(req: Request, res: Response) {
@@ -81,9 +84,10 @@ export class AuthController {
 
 			res.cookie("auth_token", token, {
 				httpOnly: true,
-				secure: process.env.NODE_ENV === "production",
-				sameSite: "lax",
+				secure: isProduction,
+				sameSite: isProduction ? "strict" : "lax",
 				maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+				path: "/",
 			});
 
 			res.json({
@@ -133,8 +137,8 @@ export class AuthController {
 		// Очищаем cookie на сервере
 		res.clearCookie("auth_token", {
 			httpOnly: true,
-			secure: process.env.NODE_ENV === "production",
-			sameSite: "lax",
+			secure: isProduction,
+			sameSite: isProduction ? "strict" : "lax",
 			path: "/",
 		});
 
