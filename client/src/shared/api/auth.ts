@@ -23,10 +23,8 @@ export async function loginAction(formData: FormData) {
 		throw new Error(errorData.message || "Login failed");
 	}
 
-	// Get cookie from server response
 	const setCookieHeader = response.headers.get("set-cookie");
 	if (setCookieHeader) {
-		// Set cookie on server
 		const cookieStore = await cookies();
 		const cookieParts = setCookieHeader.split(";");
 		const [nameValue] = cookieParts;
@@ -40,15 +38,11 @@ export async function loginAction(formData: FormData) {
 		});
 	}
 
-	// Force cache revalidation to update Header
 	revalidatePath("/");
-
-	// Redirect to home page (outside try/catch)
 	redirect("/");
 }
 
 export async function logoutAction() {
-	// Call logout API (ignore errors)
 	try {
 		await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/logout`, {
 			method: "POST",
@@ -58,13 +52,9 @@ export async function logoutAction() {
 		// Ignore API errors
 	}
 
-	// Clear cookie on server
 	const cookieStore = await cookies();
 	cookieStore.delete("auth_token");
 
-	// Force cache revalidation to update Header
 	revalidatePath("/");
-
-	// Redirect to login page (outside try/catch)
 	redirect("/login");
 }

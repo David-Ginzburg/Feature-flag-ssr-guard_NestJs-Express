@@ -7,7 +7,6 @@ import authRoutes from "./routes/auth.routes";
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Get allowed origins from environment variables
 const getAllowedOrigins = () => {
 	if (process.env.NODE_ENV === "production") {
 		if (!process.env.FRONTEND_URL) {

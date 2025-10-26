@@ -5,7 +5,6 @@ import { Role } from "@prisma/client";
 
 export class AuthService {
 	static async register(email: string, password: string, role: Role) {
-		// Валидация роли
 		if (!Object.values(Role).includes(role)) {
 			throw new Error("Invalid role");
 		}

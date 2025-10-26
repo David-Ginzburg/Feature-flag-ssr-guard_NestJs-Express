@@ -78,12 +78,11 @@ export class AuthController {
 			const user = await AuthService.login(email, password);
 			const token = AuthService.generateToken(user.id);
 
-			// Set cookie for the frontend domain
 			res.cookie("auth_token", token, {
 				httpOnly: true,
 				secure: isProduction,
-				sameSite: "none", // Allow cross-origin cookies
-				maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+				sameSite: "none",
+				maxAge: 7 * 24 * 60 * 60 * 1000,
 				path: "/",
 			});
 
