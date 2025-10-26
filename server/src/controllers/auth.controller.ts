@@ -78,16 +78,10 @@ export class AuthController {
 			const user = await AuthService.login(email, password);
 			const token = AuthService.generateToken(user.id);
 
-			res.cookie("auth_token", token, {
-				httpOnly: true,
-				secure: isProduction,
-				sameSite: "none",
-				maxAge: 7 * 24 * 60 * 60 * 1000,
-				path: "/",
-			});
-
+			// Return token in response - client will set cookie for correct domain
 			res.json({
 				...user,
+				token,
 				message: "Login successful!",
 			});
 		} catch (error: any) {
