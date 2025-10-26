@@ -105,13 +105,13 @@ model User {
 
 ### 3.3. Page Structure
 
-| Route        | Component Type | Description                                                                                        |
-| :----------- | :------------- | :------------------------------------------------------------------------------------------------ |
-| `/`          | Server         | Home page. Shows/hides `<AnalyticsWidget />` based on `canViewAnalytics` flag.                   |
-| `/dashboard` | Server         | Shows `<AdminPanel />` or regular dashboard based on `showAdminDashboard` flag.                  |
-| `/settings`  | Server         | Shows settings form only when `canAccessSettings` flag is present.                               |
-| `/login`     | Client         | Page with login form.                                                                             |
-| `/register`  | Client         | Page with registration form.                                                                      |
+| Route        | Component Type | Description                                                                     |
+| :----------- | :------------- | :------------------------------------------------------------------------------ |
+| `/`          | Server         | Home page. Shows/hides `<AnalyticsWidget />` based on `canViewAnalytics` flag.  |
+| `/dashboard` | Server         | Shows `<AdminPanel />` or regular dashboard based on `showAdminDashboard` flag. |
+| `/settings`  | Server         | Shows settings form only when `canAccessSettings` flag is present.              |
+| `/login`     | Client         | Page with login form.                                                           |
+| `/register`  | Client         | Page with registration form.                                                    |
 
 ## 4. Infrastructure and Deployment
 

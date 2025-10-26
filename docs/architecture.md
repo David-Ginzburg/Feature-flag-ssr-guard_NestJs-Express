@@ -7,6 +7,7 @@ This application implements a full-stack solution with server-side feature flag 
 ## Code Language Standards
 
 **All code must be written in English:**
+
 - Variable names, function names, class names
 - Comments and documentation
 - Error messages and logs
@@ -15,6 +16,7 @@ This application implements a full-stack solution with server-side feature flag 
 - Git commit messages
 
 **Exceptions:**
+
 - User-facing UI text can be in the target language (Russian in this case)
 - Database content can be in any language
 - Configuration files can use language-appropriate values
@@ -109,13 +111,13 @@ HTTP Request → Routes → Controllers → Services → Data Access Layer (Pris
 
 ### API Endpoints
 
-| Endpoint        | Method | Description                     | Authentication     | Caching |
-| --------------- | ------ | ------------------------------- | ------------------ | ------- |
-| `/api/register` | POST   | User registration               | No                 | No      |
-| `/api/login`    | POST   | Authentication                  | No                 | No      |
-| `/api/logout`   | POST   | Logout                         | No                 | No      |
-| `/api/me`       | GET    | Current user data               | Yes (Cookie/Header)| No      |
-| `/api/flags`    | GET    | User feature flags              | Yes (Cookie/Header)| 60 sec  |
+| Endpoint        | Method | Description        | Authentication      | Caching |
+| --------------- | ------ | ------------------ | ------------------- | ------- |
+| `/api/register` | POST   | User registration  | No                  | No      |
+| `/api/login`    | POST   | Authentication     | No                  | No      |
+| `/api/logout`   | POST   | Logout             | No                  | No      |
+| `/api/me`       | GET    | Current user data  | Yes (Cookie/Header) | No      |
+| `/api/flags`    | GET    | User feature flags | Yes (Cookie/Header) | 60 sec  |
 
 ### Authentication
 
@@ -227,7 +229,7 @@ client/src/
 - **Files**: `page.tsx`, `layout.tsx`, `login/page.tsx`, etc.
 - **Type**: Server components
 - **Rules**: Direct composition from features and entities
-- **Features**: 
+- **Features**:
   - Header integrated into `layout.tsx`
   - Page-specific components in `ui/` folder
   - Each component in separate file

@@ -2,43 +2,43 @@
 alwaysApply: true
 ---
 
-# Обязательные Правила Проекта
+# Project Rules
 
-> ⚠️ **ВАЖНО**: Перед завершением ЛЮБОЙ задачи обязательно обнови @docs/architecture.md!
+> ⚠️ **IMPORTANT**: Before completing ANY task, always update @docs/architecture.md!
 
-## 1. Архитектурные Правила
+## 1. Architectural Rules
 
-- **ВСЕГДА** следуй архитектурным правилам из @docs/arch-rules.md
-- **ВСЕГДА** применяй бизнес-требования из @requirements.md
+- **ALWAYS** follow architectural rules from @docs/arch-rules.md
+- **ALWAYS** apply business requirements from @requirements.md
 
-## 2. Обновление Документации Архитектуры
+## 2. Architecture Documentation Updates
 
-**ОБЯЗАТЕЛЬНО** обновляй @docs/architecture.md при любых изменениях:
+**MANDATORY** update @docs/architecture.md for any changes:
 
-### Когда обновлять:
+### When to update:
 
-- Добавление новых компонентов или файлов
-- Изменение API эндпоинтов или их поведения
-- Модификация системы кэширования
-- Изменения в безопасности (cookies, аутентификация)
-- Обновление конфигурации (TypeScript, Docker, etc.)
-- Добавление новых зависимостей или инструментов
-- Изменения в логировании или мониторинге
+- Adding new components or files
+- Changing API endpoints or their behavior
+- Modifying caching system
+- Security changes (cookies, authentication)
+- Configuration updates (TypeScript, Docker, etc.)
+- Adding new dependencies or tools
+- Changes in logging or monitoring
 
-### Как обновлять:
+### How to update:
 
-1. **Добавляй в раздел "Последние Изменения"** краткое описание изменений
-2. **Обновляй соответствующие разделы** (API, компоненты, кэширование, etc.)
-3. **Добавляй примеры кода** если изменилась реализация
-4. **Обновляй таблицы** (эндпоинты, роли, компоненты)
+1. **Add to "Recent Changes" section** brief description of changes
+2. **Update relevant sections** (API, components, caching, etc.)
+3. **Add code examples** if implementation changed
+4. **Update tables** (endpoints, roles, components)
 
-**Детальные шаблоны:** Смотри @.cursor/rules/architecture-updates.md
+**Detailed templates:** See @.cursor/rules/architecture-updates.md
 
-## 3. Проверка Перед Завершением
+## 3. Pre-completion Checklist
 
-Перед завершением любой задачи:
+Before completing any task:
 
-- [ ] Проверил, что изменения соответствуют @docs/arch-rules.md
-- [ ] Убедился, что требования из @requirements.md выполнены
-- [ ] Обновил @docs/architecture.md с описанием изменений
-- [ ] Добавил примеры кода если нужно
+- [ ] Verified changes comply with @docs/arch-rules.md
+- [ ] Ensured requirements from @requirements.md are met
+- [ ] Updated @docs/architecture.md with change descriptions
+- [ ] Added code examples if needed

@@ -1,76 +1,76 @@
-# Правила Обновления Архитектурной Документации
+# Architecture Documentation Update Rules
 
-## Шаблоны для Разных Типов Изменений
+## Templates for Different Types of Changes
 
-### 1. Новые API Эндпоинты
+### 1. New API Endpoints
 
 ```markdown
-### API Эндпоинты
+### API Endpoints
 
-| Эндпоинт   | Метод | Описание | Аутентификация | Кэширование |
-| ---------- | ----- | -------- | -------------- | ----------- |
-| `/api/new` | POST  | Описание | Да/Нет         | Время       |
+| Endpoint   | Method | Description | Authentication | Caching |
+| ---------- | ------ | ----------- | -------------- | ------- |
+| `/api/new` | POST   | Description | Yes/No         | Time    |
 ```
 
-### 2. Новые Компоненты
+### 2. New Components
 
 ```markdown
 #### Widgets Layer (`/client/src/components/`)
 
-- **Файлы**:
-  - `NewComponent.tsx` - Описание назначения
+- **Files**:
+  - `NewComponent.tsx` - Purpose description
 ```
 
-### 3. Изменения в Кэшировании
+### 3. Caching Changes
 
 ```markdown
 #### Next.js Server-Side Caching
 
-- **Новая функция**: Описание с примером кода
-- **Настройки**: Конкретные параметры
+- **New function**: Description with code example
+- **Settings**: Specific parameters
 ```
 
-### 4. Изменения в Безопасности
+### 4. Security Changes
 
 ````markdown
-#### Настройки Cookie
+#### Cookie Settings
 
 ```typescript
-// Новые настройки
+// New settings
 {
-	// код
+	// code
 }
 ```
 ````
 
-### 5. Новые Зависимости
+### 5. New Dependencies
 
 ```markdown
-### Зависимости
+### Dependencies
 
-- **Новая библиотека**: Версия и назначение
-- **Обновления**: Что изменилось
+- **New library**: Version and purpose
+- **Updates**: What changed
 ```
 
-## Обязательные Разделы для Обновления
+## Mandatory Sections for Updates
 
-### При любых изменениях обновляй:
+### For any changes update:
 
-1. **"Последние Изменения"** - краткое описание
-2. **Соответствующий раздел** - детальное описание
-3. **Примеры кода** - если изменилась реализация
-4. **Таблицы** - если изменились API или компоненты
+1. **"Recent Changes"** - brief description
+2. **Relevant section** - detailed description
+3. **Code examples** - if implementation changed
+4. **Tables** - if API or components changed
 
-### При добавлении новых файлов:
+### When adding new files:
 
-1. Указывай путь к файлу
-2. Описывай назначение
-3. Указывай тип (серверный/клиентский компонент)
-4. Добавляй в соответствующий слой FSD
+1. Specify file path
+2. Describe purpose
+3. Specify type (server/client component)
+4. Add to relevant FSD layer
 
-### При изменении конфигурации:
+### When changing configuration:
 
-1. Указывай что изменилось
-2. Показывай до/после
-3. Объясняй причину изменения
-4. Добавляй в раздел "Последние Изменения"
+1. Specify what changed
+2. Show before/after
+3. Explain reason for change
+4. Add to "Recent Changes" section

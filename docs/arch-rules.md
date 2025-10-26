@@ -7,6 +7,7 @@ This document defines architectural rules and patterns that must be followed dur
 ## 2. Code Language Standards
 
 **All code must be written in English:**
+
 - Variable names, function names, class names
 - Comments and documentation
 - Error messages and logs
@@ -15,6 +16,7 @@ This document defines architectural rules and patterns that must be followed dur
 - Git commit messages
 
 **Exceptions:**
+
 - User-facing UI text can be in the target language (Russian in this case)
 - Database content can be in any language
 - Configuration files can use language-appropriate values
