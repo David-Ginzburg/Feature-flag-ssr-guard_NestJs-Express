@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { getCurrentUser } from "@/shared/lib";
+import { getCurrentUserServer } from "@/entities/user/api/userServer";
 import { LogoutButton } from "@/features/auth";
 import "./globals.css";
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 async function UserStatus() {
-	const user = await getCurrentUser();
+	const user = await getCurrentUserServer();
 
 	if (!user) {
 		return (

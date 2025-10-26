@@ -10,8 +10,6 @@ export async function getFeatureFlags(): Promise<FeatureFlags> {
 	}
 
 	try {
-		console.log("Fetching flags for user with token:", authToken.value.substring(0, 20) + "...");
-
 		const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/flags`, {
 			headers: {
 				Cookie: cookieStore.toString(),
@@ -20,14 +18,11 @@ export async function getFeatureFlags(): Promise<FeatureFlags> {
 			next: { revalidate: 60 },
 		});
 
-		console.log("Response status:", response.status, "from cache:", response.headers);
-
 		if (!response.ok) {
 			return defaultFeatureFlags;
 		}
 
 		const flags = await response.json();
-		console.log("Returning flags:", flags);
 		return flags;
 	} catch (error) {
 		console.error("Failed to fetch feature flags:", error);

@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
+import { User } from "../model/types";
 
-export async function getCurrentUser() {
+export async function getCurrentUserServer(): Promise<User | null> {
 	try {
 		const cookieStore = await cookies();
 		const authToken = cookieStore.get("auth_token");
