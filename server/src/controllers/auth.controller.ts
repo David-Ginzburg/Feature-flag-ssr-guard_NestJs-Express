@@ -78,7 +78,7 @@ export class AuthController {
 			const user = await AuthService.login(email, password);
 			const token = AuthService.generateToken(user.id);
 
-			// Return token in response - client will set cookie for correct domain
+			console.log("Login successful - returning token in response body (no cookie set)");
 			res.json({
 				...user,
 				token,
