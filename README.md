@@ -80,6 +80,7 @@ NEXT_PUBLIC_API_URL="https://feature-flags-server.onrender.com"
 ### Render.com Deployment
 
 1. **Set environment variables in Render dashboard:**
+
    ```
    DATABASE_URL=your_postgresql_connection_string
    FRONTEND_URL=https://feature-flag-ssr-guard-nest-js-expr.vercel.app
@@ -87,7 +88,7 @@ NEXT_PUBLIC_API_URL="https://feature-flags-server.onrender.com"
    ```
 
 2. **See `render-env-example.txt` for complete list of required variables**
-cd ../server && npm install
+   cd ../server && npm install
 
 ```
 
