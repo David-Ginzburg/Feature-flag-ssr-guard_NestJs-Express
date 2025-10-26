@@ -51,7 +51,7 @@ This ensures international collaboration and code maintainability.
    cd ../server && npm install
    ```
 
-3. Set up environment variables (see ENV_SETUP.md)
+3. Set up environment variables (see Environment Setup section below)
 
 4. Run the development servers:
 
@@ -62,6 +62,65 @@ This ensures international collaboration and code maintainability.
    # Terminal 2 - Client
    cd client && npm run dev
    ```
+
+## 🔧 Environment Setup
+
+### Required .env files:
+
+#### 1. Root directory - `.env`
+
+```bash
+# Database
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feature_flags_db"
+
+# JWT Secret
+JWT_SECRET="your-super-secret-jwt-key-here"
+
+# API URL for client
+NEXT_PUBLIC_API_URL="http://localhost:4000"
+```
+
+#### 2. Server directory - `.env` (already exists)
+
+```bash
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feature_flags_db"
+JWT_SECRET="your-super-secret-jwt-key-here"
+```
+
+#### 3. Client directory - `.env.local`
+
+```bash
+NEXT_PUBLIC_API_URL="http://localhost:4000"
+```
+
+### Commands to create files:
+
+```bash
+# Create .env in root
+echo 'DATABASE_URL="postgresql://postgres:postgres@localhost:5432/feature_flags_db"
+JWT_SECRET="your-super-secret-jwt-key-here"
+NEXT_PUBLIC_API_URL="http://localhost:4000"' > .env
+
+# Create .env.local in client
+echo 'NEXT_PUBLIC_API_URL="http://localhost:4000"' > client/.env.local
+```
+
+### Running the application:
+
+```bash
+# Run via docker-compose
+docker-compose up
+
+# Or run individual services
+cd server && npm run dev
+cd client && npm run dev
+```
+
+### Application access:
+
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:4000
+- **PostgreSQL**: localhost:5432
 
 ## 📚 Documentation
 
