@@ -76,6 +76,17 @@ NEXT_PUBLIC_API_URL="https://feature-flags-server.onrender.com"
 ```
 
 **Note:** The `FRONTEND_URL` environment variable is required in production for CORS configuration.
+
+### Render.com Deployment
+
+1. **Set environment variables in Render dashboard:**
+   ```
+   DATABASE_URL=your_postgresql_connection_string
+   FRONTEND_URL=https://feature-flag-ssr-guard-nest-js-expr.vercel.app
+   JWT_SECRET=your-super-secret-jwt-key-here
+   ```
+
+2. **See `render-env-example.txt` for complete list of required variables**
 cd ../server && npm install
 
 ```
