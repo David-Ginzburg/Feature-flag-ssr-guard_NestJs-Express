@@ -64,7 +64,6 @@ NODE_ENV=production
 
 # CORS Origins
 FRONTEND_URL="https://feature-flag-ssr-guard-nest-js-expr.vercel.app"
-VERCEL_URL="feature-flag-ssr-guard-nest-js-expr.vercel.app"
 
 # JWT Secret
 JWT_SECRET="your-super-secret-jwt-key-here"
@@ -76,12 +75,12 @@ JWT_SECRET="your-super-secret-jwt-key-here"
 NEXT_PUBLIC_API_URL="https://feature-flags-server.onrender.com"
 ```
 
-**Note:** The server automatically detects allowed CORS origins from environment variables:
-- `FRONTEND_URL` - Primary frontend URL
-- `VERCEL_URL` - Vercel deployment URL (automatically prefixed with https://)
-- Fallback to hardcoded Vercel domain if no variables are set
-   cd ../server && npm install
-   ```
+**Note:** The `FRONTEND_URL` environment variable is required in production for CORS configuration.
+cd ../server && npm install
+
+```
+
+```
 
 3. Set up environment variables (see Environment Setup section below)
 

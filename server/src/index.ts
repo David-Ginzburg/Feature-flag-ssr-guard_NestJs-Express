@@ -10,26 +10,12 @@ const PORT = process.env.PORT || 4000;
 // Get allowed origins from environment variables
 const getAllowedOrigins = () => {
 	if (process.env.NODE_ENV === "production") {
-		const origins = [];
-		
-		// Add FRONTEND_URL if provided
-		if (process.env.FRONTEND_URL) {
-			origins.push(process.env.FRONTEND_URL);
+		if (!process.env.FRONTEND_URL) {
+			throw new Error("FRONTEND_URL environment variable is required in production");
 		}
-		
-		// Add VERCEL_URL if provided
-		if (process.env.VERCEL_URL) {
-			origins.push(`https://${process.env.VERCEL_URL}`);
-		}
-		
-		// Add fallback Vercel domain if no environment variables are set
-		if (origins.length === 0) {
-			origins.push("https://feature-flag-ssr-guard-nest-js-expr.vercel.app");
-		}
-		
-		return origins;
+		return process.env.FRONTEND_URL;
 	}
-	
+
 	return "http://localhost:3030";
 };
 
