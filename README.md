@@ -48,6 +48,38 @@ This ensures international collaboration and code maintainability.
    ```bash
    npm install
    cd client && npm install
+   ```
+
+### Environment Variables
+
+#### Server (.env)
+
+```bash
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/feature_flags"
+
+# Server
+PORT=4000
+NODE_ENV=production
+
+# CORS Origins
+FRONTEND_URL="https://feature-flag-ssr-guard-nest-js-expr.vercel.app"
+VERCEL_URL="feature-flag-ssr-guard-nest-js-expr.vercel.app"
+
+# JWT Secret
+JWT_SECRET="your-super-secret-jwt-key-here"
+```
+
+#### Client (.env.local)
+
+```bash
+NEXT_PUBLIC_API_URL="https://feature-flags-server.onrender.com"
+```
+
+**Note:** The server automatically detects allowed CORS origins from environment variables:
+- `FRONTEND_URL` - Primary frontend URL
+- `VERCEL_URL` - Vercel deployment URL (automatically prefixed with https://)
+- Fallback to hardcoded Vercel domain if no variables are set
    cd ../server && npm install
    ```
 
