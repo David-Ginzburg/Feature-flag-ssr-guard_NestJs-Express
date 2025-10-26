@@ -31,7 +31,7 @@ export class AuthService {
 
 	static getFeatureFlags(role: Role) {
 		const flags = {
-			canViewAnalytics: role === "ADMIN" || role === "EDITOR" || role === "VIEWER",
+			canViewAnalytics: role === "ADMIN" || role === "EDITOR",
 			canEditContent: role === "ADMIN" || role === "EDITOR",
 			showAdminDashboard: role === "ADMIN",
 			canAccessSettings: role === "ADMIN" || role === "EDITOR",

@@ -6,6 +6,21 @@
 
 ## Последние Изменения (2024)
 
+### Миграция на Feature-Sliced Design (FSD)
+
+- **Полная реорганизация клиента**: Переход с традиционной структуры на FSD архитектуру
+- **Слоистая структура**: app → widgets → features → entities → shared
+- **Разделение ответственности**: Четкое разделение компонентов по бизнес-логике
+- **Переиспользование кода**: Улучшенная модульность и переиспользование компонентов
+
+### Новая Структура Клиента
+
+- **Shared слой**: Общие UI компоненты (Button, Spinner), утилиты и API
+- **Entities слой**: Модели данных (User, FeatureFlags) и API для работы с ними
+- **Features слой**: Бизнес-функции (аутентификация, админка)
+- **Widgets слой**: Композиционные UI блоки (дашборд, админ панель)
+- **Pages слой**: Страницы и общие компоненты (Header)
+
 ### Безопасность и Конфигурация
 
 - **Улучшена безопасность cookies**: Добавлена условная настройка `secure` и `sameSite` флагов в зависимости от окружения
@@ -128,41 +143,102 @@ interface FeatureFlags {
 
 ## Архитектура Фронтенда
 
+### Feature-Sliced Design (FSD) Структура
+
+```
+client/src/
+├── app/                    # Next.js App Router (страницы)
+│   ├── layout.tsx         # Корневой layout с Header
+│   ├── page.tsx           # Главная страница
+│   ├── ui/                # UI компоненты главной страницы
+│   │   └── FeatureFlagsList.tsx
+│   ├── login/page.tsx     # Страница входа
+│   ├── register/page.tsx  # Страница регистрации
+│   ├── dashboard/         # Страница дашборда
+│   │   ├── page.tsx       # Страница дашборда
+│   │   └── ui/            # UI компоненты дашборда
+│   │       ├── DashboardContent.tsx
+│   │       ├── DashboardWrapper.tsx
+│   │       ├── AnalyticsWidget.tsx
+│   │       └── index.ts
+│   └── settings/page.tsx  # Страница настроек
+├── features/             # Features слой
+│   ├── auth/            # Аутентификация
+│   │   └── ui/
+│   │       ├── LoginForm.tsx
+│   │       ├── RegisterForm.tsx
+│   │       └── LogoutButton.tsx
+│   └── admin/           # Админка
+│       └── ui/
+│           └── AdminPanel.tsx
+├── entities/            # Entities слой
+│   ├── user/           # Пользователь
+│   │   ├── model/
+│   │   │   └── types.ts
+│   │   └── api/
+│   │       └── userApi.ts
+│   └── feature-flag/   # Фича-флаги
+│       ├── model/
+│       │   └── types.ts
+│       └── api/
+│           └── flagsApi.ts
+└── shared/             # Shared слой
+    ├── ui/            # Общие UI компоненты
+    │   ├── button/
+    │   └── spinner/
+    ├── lib/           # Утилиты
+    │   ├── auth.ts
+    │   ├── flags.ts
+    │   └── utils.ts
+    └── api/           # Общие API
+        └── auth.ts
+```
+
 ### Слои FSD
 
 #### 1. App Layer (`/client/src/app/`)
 
-- **Ответственность**: Маршрутизация и композиция страниц
+- **Ответственность**: Next.js App Router страницы и маршрутизация
 - **Файлы**: `page.tsx`, `layout.tsx`, `login/page.tsx`, etc.
 - **Тип**: Серверные компоненты
+- **Правила**: Прямая композиция из features и entities
+- **Особенности**:
+  - Header интегрирован в `layout.tsx`
+  - Специфичные для страницы компоненты лежат в `ui/` папке страницы
+  - Каждый компонент в отдельном файле
+  - Нет widgets слоя - все компоненты специфичны для страниц
 
-#### 2. Widgets Layer (`/client/src/components/`)
+#### 2. Features Layer (`/client/src/features/`)
 
-- **Ответственность**: Композиционные UI блоки
+- **Ответственность**: Бизнес-функции и сценарии
 - **Файлы**:
-  - `Header.tsx` - Основная навигация с интеграцией logout
-  - `AnalyticsWidget.tsx` - Виджет аналитики (только для ADMIN/EDITOR)
-  - `AdminPanel.tsx` - Панель администратора (только для ADMIN)
-  - `LogoutButton.tsx` - Кнопка выхода с состоянием загрузки
-  - `Spinner.tsx` - Переиспользуемый компонент загрузки
-- **Тип**: Смешанные (серверные и клиентские компоненты)
-
-#### 3. Features Layer (встроен в страницы)
-
-- **Ответственность**: Бизнес-сценарии
-- **Реализация**: Формы логина/регистрации в `app/login/`, `app/register/`
+  - `auth/` - Аутентификация (LoginForm, RegisterForm, LogoutButton)
+  - `admin/` - Админка (AdminPanel)
 - **Тип**: Клиентские компоненты (`'use client'`)
+- **Правила**: Использует entities, не зависит от widgets
 
-#### 4. Shared Layer (`/client/src/lib/`)
+#### 4. Entities Layer (`/client/src/entities/`)
+
+- **Ответственность**: Бизнес-сущности и их API
+- **Файлы**:
+  - `user/` - Пользователь (модель, API)
+  - `feature-flag/` - Фича-флаги (модель, API)
+- **Тип**: Серверные функции и типы
+- **Правила**: Независим от других слоев, переиспользуемый
+
+#### 5. Shared Layer (`/client/src/shared/`)
 
 - **Ответственность**: Переиспользуемый код
-- **Файлы**: `flags.ts`` - функция получения фича-флагов
-- **Правила**: Независим от бизнес-логики
+- **Файлы**:
+  - `ui/` - Общие UI компоненты (Button, Spinner)
+  - `lib/` - Утилиты (auth, flags, utils)
+  - `api/` - Общие API функции
+- **Правила**: Независим от бизнес-логики, переиспользуемый
 
 ### Серверный Рендеринг Фича-Флагов
 
 ```typescript
-// lib/flags.ts
+// shared/lib/flags.ts
 export async function getFeatureFlags() {
 	const cookieStore = await cookies();
 	const authToken = cookieStore.get("auth_token");
@@ -181,6 +257,32 @@ export async function getFeatureFlags() {
 
 	return await response.json();
 }
+```
+
+### FSD Правила Импортов
+
+```typescript
+// ✅ Правильные импорты (снизу вверх)
+// app → widgets → features → entities → shared
+
+// В app слое (страницы)
+import { AnalyticsWidget } from "@/widgets/dashboard";
+import { getFeatureFlags } from "@/entities/feature-flag";
+import { LogoutButton } from "@/features/auth";
+
+// В widgets слое
+import { AdminPanel } from "@/features/admin";
+import { getFeatureFlags } from "@/entities/feature-flag";
+
+// В features слое
+import { loginUser } from "@/entities/user";
+import { Button } from "@/shared/ui";
+
+// ❌ Неправильные импорты (сверху вниз)
+// shared → entities → features → widgets → app
+
+// В shared слое НЕ должно быть импортов из других слоев
+// В entities слое НЕ должно быть импортов из features/widgets/app
 ```
 
 ### Система Кэширования
@@ -209,14 +311,57 @@ res.setHeader("ETag", `"${req.user?.id || "anonymous"}-${Math.floor(Date.now() /
 
 ```typescript
 // app/page.tsx
-export default async function HomePage() {
+import { Suspense } from "react";
+import { getFeatureFlags } from "@/entities/feature-flag";
+import { AnalyticsWidget, FeatureFlagsList } from "@/widgets/dashboard";
+
+async function FeatureFlagsContent() {
 	const flags = await getFeatureFlags();
 
 	return (
-		<div>
+		<>
 			{flags.canViewAnalytics && <AnalyticsWidget />}
-			{/* Другие компоненты на основе флагов */}
+			<FeatureFlagsList flags={flags} />
+		</>
+	);
+}
+
+export default function HomePage() {
+	return (
+		<div className="container mx-auto p-8">
+			<h1 className="text-3xl font-bold mb-8">Welcome to Feature Flags Demo</h1>
+			<Suspense fallback={<div>Loading feature flags...</div>}>
+				<FeatureFlagsContent />
+			</Suspense>
 		</div>
+	);
+}
+```
+
+### Композиция Компонентов
+
+```typescript
+// widgets/dashboard/ui/DashboardContent.tsx
+import { getFeatureFlags } from "@/entities/feature-flag";
+import { AdminPanel } from "@/features/admin";
+import { AnalyticsWidget, FeatureFlagsList } from "./";
+
+async function DashboardContent() {
+	const flags = await getFeatureFlags();
+
+	return (
+		<>
+			{flags.canViewAnalytics && <AnalyticsWidget />}
+			{flags.showAdminDashboard ? (
+				<AdminPanel />
+			) : (
+				<div className="bg-gray-100 p-6 rounded-lg">
+					<h2 className="text-xl font-semibold mb-4">Regular Dashboard</h2>
+					<p>Welcome to your dashboard! You have standard user access.</p>
+				</div>
+			)}
+			<FeatureFlagsList flags={flags} />
+		</>
 	);
 }
 ```
@@ -391,12 +536,45 @@ services:
 - **Мониторинг производительности**: Отслеживание времени ответа API
 - **Ошибки**: Централизованное логирование ошибок
 
+## Преимущества FSD Архитектуры
+
+### 1. Четкое Разделение Ответственности
+
+- **Слоистая структура**: Каждый слой имеет свою роль и не может зависеть от вышестоящих
+- **Изоляция бизнес-логики**: Features содержат только бизнес-сценарии
+- **Переиспользование**: Entities и Shared можно использовать везде
+
+### 2. Масштабируемость
+
+- **Модульность**: Легко добавлять новые features и widgets
+- **Независимость**: Изменения в одном слое не влияют на другие
+- **Команды**: Разные команды могут работать с разными слоями
+
+### 3. Тестируемость
+
+- **Изоляция**: Каждый слой можно тестировать независимо
+- **Моки**: Легко создавать моки для зависимостей
+- **Unit тесты**: Четкие границы для unit тестов
+
+### 4. Поддерживаемость
+
+- **Поиск кода**: Легко найти нужный компонент по его назначению
+- **Рефакторинг**: Безопасные изменения в рамках слоя
+- **Документация**: Структура сама документирует архитектуру
+
+### 5. Next.js Совместимость
+
+- **App Router**: Полная совместимость с Next.js 13+ App Router
+- **Server Components**: Серверные компоненты по умолчанию
+- **Client Components**: Минимальное использование клиентского кода
+
 ## Заключение
 
 Архитектура обеспечивает:
 
-- ✅ **Чистоту кода** через разделение ответственности
-- ✅ **Масштабируемость** через микросервисный подход
+- ✅ **Чистоту кода** через FSD разделение ответственности
+- ✅ **Масштабируемость** через модульную структуру
 - ✅ **Безопасность** через ролевую модель
 - ✅ **Производительность** через серверный рендеринг
-- ✅ **Поддерживаемость** через четкую структуру
+- ✅ **Поддерживаемость** через четкую FSD структуру
+- ✅ **Тестируемость** через изолированные слои

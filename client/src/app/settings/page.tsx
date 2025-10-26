@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getFeatureFlags } from "@/lib/flags";
+import { getFeatureFlags } from "@/entities/feature-flag";
 
 async function SettingsContent() {
 	const flags = await getFeatureFlags();

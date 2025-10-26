@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Spinner from "./Spinner";
+import { Spinner } from "@/shared/ui";
+import { logoutUser } from "@/entities/user";
+import { UserRole } from "@/entities/user";
 
 interface LogoutButtonProps {
-	userRole: string;
+	userRole: UserRole;
 }
 
 export default function LogoutButton({ userRole }: LogoutButtonProps) {
@@ -14,11 +16,7 @@ export default function LogoutButton({ userRole }: LogoutButtonProps) {
 		setIsLoading(true);
 
 		try {
-			await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/logout`, {
-				method: "POST",
-				credentials: "include",
-			});
-
+			await logoutUser();
 			window.location.href = "/login";
 		} catch (error) {
 			console.error("Logout error:", error);

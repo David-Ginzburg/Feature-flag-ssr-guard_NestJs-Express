@@ -1,25 +1,11 @@
 import { Suspense } from "react";
-import { getFeatureFlags } from "@/lib/flags";
-import AnalyticsWidget from "@/components/AnalyticsWidget";
+import { getFeatureFlags } from "@/entities/feature-flag";
+import FeatureFlagsList from "./ui/FeatureFlagsList";
 
 async function FeatureFlagsContent() {
 	const flags = await getFeatureFlags();
 
-	return (
-		<>
-			{flags.canViewAnalytics && <AnalyticsWidget />}
-
-			<div className="mt-8">
-				<h2 className="text-xl font-semibold mb-4">Available Features:</h2>
-				<ul className="space-y-2">
-					<li>Analytics: {flags.canViewAnalytics ? "✅" : "❌"}</li>
-					<li>Content Editing: {flags.canEditContent ? "✅" : "❌"}</li>
-					<li>Admin Dashboard: {flags.showAdminDashboard ? "✅" : "❌"}</li>
-					<li>Settings Access: {flags.canAccessSettings ? "✅" : "❌"}</li>
-				</ul>
-			</div>
-		</>
-	);
+	return <FeatureFlagsList flags={flags} />;
 }
 
 export default function HomePage() {

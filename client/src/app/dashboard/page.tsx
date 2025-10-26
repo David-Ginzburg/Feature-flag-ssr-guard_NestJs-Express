@@ -1,32 +1,5 @@
-import { Suspense } from "react";
-import { getFeatureFlags } from "@/lib/flags";
-import AdminPanel from "@/components/AdminPanel";
-
-async function DashboardContent() {
-	const flags = await getFeatureFlags();
-
-	return (
-		<>
-			{flags.showAdminDashboard ? (
-				<AdminPanel />
-			) : (
-				<div className="bg-gray-100 p-6 rounded-lg">
-					<h2 className="text-xl font-semibold mb-4">Regular Dashboard</h2>
-					<p>Welcome to your dashboard! You have standard user access.</p>
-				</div>
-			)}
-		</>
-	);
-}
+import { DashboardWrapper } from "./ui";
 
 export default function DashboardPage() {
-	return (
-		<div className="container mx-auto p-8">
-			<h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-
-			<Suspense fallback={<div>Loading dashboard...</div>}>
-				<DashboardContent />
-			</Suspense>
-		</div>
-	);
+	return <DashboardWrapper />;
 }
