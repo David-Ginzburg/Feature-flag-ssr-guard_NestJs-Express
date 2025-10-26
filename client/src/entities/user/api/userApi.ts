@@ -46,7 +46,7 @@ export async function loginUser(data: {
 		const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			credentials: "include",
+			credentials: "include", // Important for cross-origin cookies
 			body: JSON.stringify(data),
 		});
 
