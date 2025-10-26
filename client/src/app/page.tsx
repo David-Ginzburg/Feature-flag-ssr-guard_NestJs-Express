@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { getFeatureFlags } from "@/entities/feature-flag";
-import FeatureFlagsList from "./ui/FeatureFlagsList";
+import FeatureFlagsList from "../features/admin/ui/FeatureFlagsList";
 
 async function FeatureFlagsContent() {
 	const flags = await getFeatureFlags();
