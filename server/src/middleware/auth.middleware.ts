@@ -16,7 +16,13 @@ declare global {
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const token = req.cookies.auth_token;
+		let token = req.headers.authorization;
+		if (token && token.startsWith("Bearer ")) {
+			token = token.substring(7);
+		} else {
+			token = req.cookies.auth_token;
+		}
+
 		if (!token) return next();
 
 		const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };

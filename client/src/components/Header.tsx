@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { getCurrentUser } from "@/lib/auth";
+import LogoutButton from "./LogoutButton";
 
 async function UserStatus() {
 	const user = await getCurrentUser();
@@ -13,16 +14,7 @@ async function UserStatus() {
 		);
 	}
 
-	return (
-		<div className="flex items-center space-x-4">
-			<span className="text-sm text-gray-600">
-				{user.role} •{" "}
-				<Link href="/logout" className="text-blue-500 hover:underline">
-					Logout
-				</Link>
-			</span>
-		</div>
-	);
+	return <LogoutButton userRole={user.role} />;
 }
 
 export default function Header() {

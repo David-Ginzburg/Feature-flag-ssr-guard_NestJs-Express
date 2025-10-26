@@ -9,10 +9,10 @@ export async function getCurrentUser() {
 			return null;
 		}
 
-		// Получаем данные пользователя из базы
 		const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/me`, {
 			headers: {
 				Cookie: `auth_token=${authToken.value}`,
+				Authorization: `Bearer ${authToken.value}`,
 			},
 			cache: "no-store",
 		});
@@ -20,9 +20,7 @@ export async function getCurrentUser() {
 		if (response.ok) {
 			return await response.json();
 		}
-	} catch (error) {
-		// Токен невалидный или ошибка
-	}
+	} catch {}
 
 	return null;
 }

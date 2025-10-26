@@ -74,7 +74,7 @@ export default function RegisterPage() {
 					{isLoading ? (
 						<>
 							<Spinner size="sm" className="mr-2" />
-							Регистрация...
+							Registering...
 						</>
 					) : (
 						"Register"

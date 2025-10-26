@@ -25,8 +25,8 @@ export default function LoginPage() {
 			});
 
 			if (response.ok) {
-				// Используем Next.js router для редиректа
 				router.push("/");
+				router.refresh();
 			} else {
 				const errorData = await response.json();
 				setError(errorData.message || "Invalid credentials");
@@ -67,7 +67,7 @@ export default function LoginPage() {
 					{isLoading ? (
 						<>
 							<Spinner size="sm" className="mr-2" />
-							Вход...
+							Login...
 						</>
 					) : (
 						"Login"
