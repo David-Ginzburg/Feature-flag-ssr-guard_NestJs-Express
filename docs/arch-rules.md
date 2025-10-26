@@ -1,12 +1,29 @@
-# Архитектурные Правила и Паттерны
+# Architectural Rules and Patterns
 
-## 1. Введение
+## 1. Introduction
 
-Этот документ определяет архитектурные правила и паттерны, которые должны соблюдаться при разработке проекта. Цель — обеспечить чистоту, масштабируемость и поддерживаемость кодовой базы.
+This document defines architectural rules and patterns that must be followed during project development. The goal is to ensure codebase cleanliness, scalability, and maintainability.
+
+## 2. Code Language Standards
+
+**All code must be written in English:**
+- Variable names, function names, class names
+- Comments and documentation
+- Error messages and logs
+- API responses and user-facing text
+- File and folder names
+- Git commit messages
+
+**Exceptions:**
+- User-facing UI text can be in the target language (Russian in this case)
+- Database content can be in any language
+- Configuration files can use language-appropriate values
+
+This ensures international collaboration and code maintainability.
 
 ---
 
-## 2. Архитектура Бэкенда (Express.js)
+## 3. Backend Architecture (Express.js)
 
 Для бэкенда применяется **Многоуровневая архитектура (Layered Architecture)**. Этот подход обеспечивает строгое разделение ответственности (Separation of Concerns), что упрощает тестирование, рефакторинг и понимание кода.
 

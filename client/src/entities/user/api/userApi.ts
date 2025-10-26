@@ -68,6 +68,6 @@ export async function logoutUser(): Promise<void> {
 			credentials: "include",
 		});
 	} catch {
-		// Игнорируем ошибки API
+		// Ignore API errors
 	}
 }

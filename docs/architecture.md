@@ -1,8 +1,25 @@
-# Архитектура Full-Stack Приложения с Фича-Флагами
+# Full-Stack Application Architecture with Feature Flags
 
-## Обзор Архитектуры
+## Architecture Overview
 
-Данное приложение реализует full-stack решение с серверным рендерингом фича-флагов, следуя принципам чистой архитектуры и разделения ответственности.
+This application implements a full-stack solution with server-side feature flag rendering, following clean architecture principles and separation of concerns.
+
+## Code Language Standards
+
+**All code must be written in English:**
+- Variable names, function names, class names
+- Comments and documentation
+- Error messages and logs
+- API responses
+- File and folder names
+- Git commit messages
+
+**Exceptions:**
+- User-facing UI text can be in the target language (Russian in this case)
+- Database content can be in any language
+- Configuration files can use language-appropriate values
+
+This ensures international collaboration and code maintainability.
 
 ## Последние Изменения (2024)
 

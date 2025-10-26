@@ -23,10 +23,10 @@ export async function loginAction(formData: FormData) {
 		throw new Error(errorData.message || "Login failed");
 	}
 
-	// Получаем cookie из ответа сервера
+	// Get cookie from server response
 	const setCookieHeader = response.headers.get("set-cookie");
 	if (setCookieHeader) {
-		// Устанавливаем cookie на сервере
+		// Set cookie on server
 		const cookieStore = await cookies();
 		const cookieParts = setCookieHeader.split(";");
 		const [nameValue] = cookieParts;
@@ -40,31 +40,31 @@ export async function loginAction(formData: FormData) {
 		});
 	}
 
-	// Принудительно обновляем кэш для обновления Header
+	// Force cache revalidation to update Header
 	revalidatePath("/");
 
-	// Редирект на главную страницу (вне try/catch)
+	// Redirect to home page (outside try/catch)
 	redirect("/");
 }
 
 export async function logoutAction() {
-	// Вызываем API logout (игнорируем ошибки)
+	// Call logout API (ignore errors)
 	try {
 		await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/logout`, {
 			method: "POST",
 			credentials: "include",
 		});
 	} catch {
-		// Игнорируем ошибки API
+		// Ignore API errors
 	}
 
-	// Очищаем cookie на сервере
+	// Clear cookie on server
 	const cookieStore = await cookies();
 	cookieStore.delete("auth_token");
 
-	// Принудительно обновляем кэш для обновления Header
+	// Force cache revalidation to update Header
 	revalidatePath("/");
 
-	// Редирект на страницу входа (вне try/catch)
+	// Redirect to login page (outside try/catch)
 	redirect("/login");
 }
