@@ -7,7 +7,7 @@
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
 		"build": "tsc",
-		"start": "node --loader tsx/esm dist/index.js",
+		"start": "node --import tsx/esm dist/index.js",
 		"db:generate": "prisma generate",
 		"db:push": "prisma db push"
 	},
