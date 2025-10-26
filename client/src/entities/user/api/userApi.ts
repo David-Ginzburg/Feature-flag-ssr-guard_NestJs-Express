@@ -52,13 +52,15 @@ export async function loginUser(data: {
 
 		if (response.ok) {
 			const result = await response.json();
-			
+
 			// Set cookie for the frontend domain (Vercel)
 			if (result.token) {
 				const isProduction = process.env.NODE_ENV === "production";
-				document.cookie = `auth_token=${result.token}; path=/; max-age=${7 * 24 * 60 * 60}; ${isProduction ? "secure; " : ""}samesite=lax`;
+				document.cookie = `auth_token=${result.token}; path=/; max-age=${7 * 24 * 60 * 60}; ${
+					isProduction ? "secure; " : ""
+				}samesite=lax`;
 			}
-			
+
 			return { success: true };
 		} else {
 			const errorData = await response.json();
@@ -78,7 +80,7 @@ export async function logoutUser(): Promise<void> {
 	} catch {
 		// Ignore API errors
 	}
-	
+
 	// Remove cookie from client side
 	document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 }
