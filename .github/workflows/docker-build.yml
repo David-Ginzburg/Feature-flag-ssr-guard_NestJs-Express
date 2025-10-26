@@ -1,4 +1,4 @@
-name: Docker Build Validation
+name: Build and Deploy
 
 on:
   push:
@@ -31,3 +31,17 @@ jobs:
           docker-compose build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+  deploy-backend:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
