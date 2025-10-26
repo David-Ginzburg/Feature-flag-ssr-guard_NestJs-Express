@@ -21,63 +21,63 @@ This application implements a full-stack solution with server-side feature flag 
 
 This ensures international collaboration and code maintainability.
 
-## Последние Изменения (2024)
+## Recent Changes (2024)
 
-### Миграция на Feature-Sliced Design (FSD)
+### Migration to Feature-Sliced Design (FSD)
 
-- **Полная реорганизация клиента**: Переход с традиционной структуры на FSD архитектуру
-- **Слоистая структура**: app → widgets → features → entities → shared
-- **Разделение ответственности**: Четкое разделение компонентов по бизнес-логике
-- **Переиспользование кода**: Улучшенная модульность и переиспользование компонентов
+- **Complete client reorganization**: Transition from traditional structure to FSD architecture
+- **Layered structure**: app → widgets → features → entities → shared
+- **Separation of concerns**: Clear separation of components by business logic
+- **Code reusability**: Improved modularity and component reusability
 
-### Новая Структура Клиента
+### New Client Structure
 
-- **Shared слой**: Общие UI компоненты (Button, Spinner), утилиты и API
-- **Entities слой**: Модели данных (User, FeatureFlags) и API для работы с ними
-- **Features слой**: Бизнес-функции (аутентификация, админка)
-- **Widgets слой**: Композиционные UI блоки (дашборд, админ панель)
-- **Pages слой**: Страницы и общие компоненты (Header)
+- **Shared layer**: Common UI components (Button, Spinner), utilities and API
+- **Entities layer**: Data models (User, FeatureFlags) and API for working with them
+- **Features layer**: Business functions (authentication, admin)
+- **Widgets layer**: Compositional UI blocks (dashboard, admin panel)
+- **Pages layer**: Pages and common components (Header)
 
-### Безопасность и Конфигурация
+### Security and Configuration
 
-- **Улучшена безопасность cookies**: Добавлена условная настройка `secure` и `sameSite` флагов в зависимости от окружения
-- **Миграция на ES Modules**: Переход с CommonJS на ES Modules для сервера с использованием `tsx` вместо `ts-node-dev`
-- **TypeScript конфигурация**: Обновлена конфигурация для поддержки ES Modules с `verbatimModuleSyntax`
+- **Improved cookie security**: Added conditional `secure` and `sameSite` flag configuration based on environment
+- **Migration to ES Modules**: Transition from CommonJS to ES Modules for server using `tsx` instead of `ts-node-dev`
+- **TypeScript configuration**: Updated configuration to support ES Modules with `verbatimModuleSyntax`
 
-### Пользовательский Интерфейс
+### User Interface
 
-- **Система загрузки**: Добавлен компонент `Spinner` для отображения состояния загрузки
-- **Улучшенная навигация**: Замена `window.location.href` на Next.js Router API для лучшего UX
-- **Интеграция logout**: Удалена отдельная страница logout, функциональность интегрирована в Header
+- **Loading system**: Added `Spinner` component for loading state display
+- **Improved navigation**: Replaced `window.location.href` with Next.js Router API for better UX
+- **Logout integration**: Removed separate logout page, functionality integrated into Header
 
-### Кэширование и Производительность
+### Caching and Performance
 
-- **Оптимизация API вызовов**: Реализовано пользовательское кэширование для `/api/flags` с 60-секундной ревалидацией
-- **REST API улучшения**: Переход с query parameters на Authorization header для передачи токенов
-- **Логирование**: Добавлено детальное логирование для мониторинга вызовов API
+- **API call optimization**: Implemented custom caching for `/api/flags` with 60-second revalidation
+- **REST API improvements**: Transition from query parameters to Authorization header for token passing
+- **Logging**: Added detailed logging for API call monitoring
 
-### Интернационализация
+### Internationalization
 
-- **Перевод интерфейса**: Все пользовательские сообщения переведены с русского на английский
-- **Очистка кода**: Удалены все комментарии из кодовой базы для улучшения читаемости
+- **Interface translation**: All user messages translated from Russian to English
+- **Code cleanup**: Removed all comments from codebase for improved readability
 
-## Архитектурные Принципы
+## Architectural Principles
 
-### 1. Многоуровневая Архитектура (Layered Architecture)
+### 1. Layered Architecture
 
-- **Разделение ответственности**: Каждый слой имеет четко определенную роль
-- **Независимость**: Слои слабо связаны между собой
-- **Тестируемость**: Каждый слой может быть протестирован изолированно
+- **Separation of concerns**: Each layer has a clearly defined role
+- **Independence**: Layers are loosely coupled
+- **Testability**: Each layer can be tested in isolation
 
 ### 2. Feature-Sliced Design (FSD)
 
-- **Слоистая структура**: app → widgets → features → entities → shared
-- **Серверные компоненты по умолчанию**: Минимизация клиентского кода
-- **Переиспользование**: Компоненты организованы по бизнес-логике
+- **Layered structure**: app → widgets → features → entities → shared
+- **Server components by default**: Minimize client-side code
+- **Reusability**: Components organized by business logic
 
-## Архитектура Бэкенда
+## Backend Architecture
 
-### Слои и Поток Данных
+### Layers and Data Flow
 
 ```
 HTTP Request → Routes → Controllers → Services → Data Access Layer (Prisma)
@@ -85,47 +85,47 @@ HTTP Request → Routes → Controllers → Services → Data Access Layer (Pris
 
 #### 1. Routes Layer (`/server/src/routes/`)
 
-- **Ответственность**: HTTP маршрутизация
-- **Файлы**: `auth.routes.ts`
-- **Правила**: Только определение эндпоинтов, без бизнес-логики
+- **Responsibility**: HTTP routing
+- **Files**: `auth.routes.ts`
+- **Rules**: Only endpoint definition, no business logic
 
 #### 2. Controllers Layer (`/server/src/controllers/`)
 
-- **Ответственность**: Обработка HTTP запросов/ответов
-- **Файлы**: `auth.controller.ts`
-- **Правила**: Тонкий слой между HTTP и бизнес-логикой
+- **Responsibility**: HTTP request/response handling
+- **Files**: `auth.controller.ts`
+- **Rules**: Thin layer between HTTP and business logic
 
 #### 3. Services Layer (`/server/src/services/`)
 
-- **Ответственность**: Вся бизнес-логика приложения
-- **Файлы**: `auth.service.ts`
-- **Правила**: Независим от HTTP, переиспользуемый
+- **Responsibility**: All application business logic
+- **Files**: `auth.service.ts`
+- **Rules**: Independent of HTTP, reusable
 
 #### 4. Data Access Layer (`/server/src/lib/`)
 
-- **Ответственность**: Взаимодействие с базой данных
-- **Файлы**: `prisma.ts`
-- **Правила**: Единственная точка доступа к БД
+- **Responsibility**: Database interaction
+- **Files**: `prisma.ts`
+- **Rules**: Single point of database access
 
-### API Эндпоинты
+### API Endpoints
 
-| Эндпоинт        | Метод | Описание                     | Аутентификация     | Кэширование |
-| --------------- | ----- | ---------------------------- | ------------------ | ----------- |
-| `/api/register` | POST  | Регистрация пользователя     | Нет                | Нет         |
-| `/api/login`    | POST  | Аутентификация               | Нет                | Нет         |
-| `/api/logout`   | POST  | Выход из системы             | Нет                | Нет         |
-| `/api/me`       | GET   | Данные текущего пользователя | Да (Cookie/Header) | Нет         |
-| `/api/flags`    | GET   | Фича-флаги пользователя      | Да (Cookie/Header) | 60 сек      |
+| Endpoint        | Method | Description                     | Authentication     | Caching |
+| --------------- | ------ | ------------------------------- | ------------------ | ------- |
+| `/api/register` | POST   | User registration               | No                 | No      |
+| `/api/login`    | POST   | Authentication                  | No                 | No      |
+| `/api/logout`   | POST   | Logout                         | No                 | No      |
+| `/api/me`       | GET    | Current user data               | Yes (Cookie/Header)| No      |
+| `/api/flags`    | GET    | User feature flags              | Yes (Cookie/Header)| 60 sec  |
 
-### Аутентификация
+### Authentication
 
-#### Поддерживаемые методы
+#### Supported Methods
 
-- **Cookie-based**: `auth_token` в httpOnly cookie
+- **Cookie-based**: `auth_token` in httpOnly cookie
 - **Header-based**: `Authorization: Bearer <token>` header
-- **Приоритет**: Header имеет приоритет над cookie
+- **Priority**: Header takes priority over cookie
 
-#### Настройки Cookie
+#### Cookie Settings
 
 ```typescript
 // Development
@@ -133,7 +133,7 @@ HTTP Request → Routes → Controllers → Services → Data Access Layer (Pris
   httpOnly: true,
   secure: false,
   sameSite: "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   path: "/"
 }
 
@@ -142,456 +142,232 @@ HTTP Request → Routes → Controllers → Services → Data Access Layer (Pris
   httpOnly: true,
   secure: true,
   sameSite: "strict",
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 дней
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   path: "/"
 }
 ```
 
-### Система Фича-Флагов
+### Feature Flags System
 
-```typescript
-interface FeatureFlags {
-	canViewAnalytics: boolean; // ADMIN, EDITOR
-	canEditContent: boolean; // ADMIN, EDITOR
-	showAdminDashboard: boolean; // ADMIN only
-	canAccessSettings: boolean; // ADMIN, EDITOR
-}
-```
+#### Role-Based Access Control
 
-## Архитектура Фронтенда
-
-### Feature-Sliced Design (FSD) Структура
-
-```
-client/src/
-├── app/                    # Next.js App Router (страницы)
-│   ├── layout.tsx         # Корневой layout с Header
-│   ├── page.tsx           # Главная страница
-│   ├── ui/                # UI компоненты главной страницы
-│   │   └── FeatureFlagsList.tsx
-│   ├── login/page.tsx     # Страница входа
-│   ├── register/page.tsx  # Страница регистрации
-│   ├── dashboard/         # Страница дашборда
-│   │   ├── page.tsx       # Страница дашборда
-│   │   └── ui/            # UI компоненты дашборда
-│   │       ├── DashboardContent.tsx
-│   │       ├── DashboardWrapper.tsx
-│   │       ├── AnalyticsWidget.tsx
-│   │       └── index.ts
-│   └── settings/page.tsx  # Страница настроек
-├── features/             # Features слой
-│   ├── auth/            # Аутентификация
-│   │   └── ui/
-│   │       ├── LoginForm.tsx
-│   │       ├── RegisterForm.tsx
-│   │       └── LogoutButton.tsx
-│   └── admin/           # Админка
-│       └── ui/
-│           └── AdminPanel.tsx
-├── entities/            # Entities слой
-│   ├── user/           # Пользователь
-│   │   ├── model/
-│   │   │   └── types.ts
-│   │   └── api/
-│   │       └── userApi.ts
-│   └── feature-flag/   # Фича-флаги
-│       ├── model/
-│       │   └── types.ts
-│       └── api/
-│           └── flagsApi.ts
-└── shared/             # Shared слой
-    ├── ui/            # Общие UI компоненты
-    │   ├── button/
-    │   └── spinner/
-    ├── lib/           # Утилиты
-    │   ├── auth.ts
-    │   ├── flags.ts
-    │   └── utils.ts
-    └── api/           # Общие API
-        └── auth.ts
-```
-
-### Слои FSD
-
-#### 1. App Layer (`/client/src/app/`)
-
-- **Ответственность**: Next.js App Router страницы и маршрутизация
-- **Файлы**: `page.tsx`, `layout.tsx`, `login/page.tsx`, etc.
-- **Тип**: Серверные компоненты
-- **Правила**: Прямая композиция из features и entities
-- **Особенности**:
-  - Header интегрирован в `layout.tsx`
-  - Специфичные для страницы компоненты лежат в `ui/` папке страницы
-  - Каждый компонент в отдельном файле
-  - Нет widgets слоя - все компоненты специфичны для страниц
-
-#### 2. Features Layer (`/client/src/features/`)
-
-- **Ответственность**: Бизнес-функции и сценарии
-- **Файлы**:
-  - `auth/` - Аутентификация (LoginForm, RegisterForm, LogoutButton)
-  - `admin/` - Админка (AdminPanel)
-- **Тип**: Клиентские компоненты (`'use client'`)
-- **Правила**: Использует entities, не зависит от widgets
-
-#### 4. Entities Layer (`/client/src/entities/`)
-
-- **Ответственность**: Бизнес-сущности и их API
-- **Файлы**:
-  - `user/` - Пользователь (модель, API)
-  - `feature-flag/` - Фича-флаги (модель, API)
-- **Тип**: Серверные функции и типы
-- **Правила**: Независим от других слоев, переиспользуемый
-
-#### 5. Shared Layer (`/client/src/shared/`)
-
-- **Ответственность**: Переиспользуемый код
-- **Файлы**:
-  - `ui/` - Общие UI компоненты (Button, Spinner)
-  - `lib/` - Утилиты (auth, flags, utils)
-  - `api/` - Общие API функции
-- **Правила**: Независим от бизнес-логики, переиспользуемый
-
-### Серверный Рендеринг Фича-Флагов
-
-```typescript
-// shared/lib/flags.ts
-export async function getFeatureFlags() {
-	const cookieStore = await cookies();
-	const authToken = cookieStore.get("auth_token");
-
-	if (!authToken) {
-		return defaultFlags;
-	}
-
-	const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/flags`, {
-		headers: {
-			Cookie: cookieStore.toString(),
-			Authorization: `Bearer ${authToken.value}`,
-		},
-		next: { revalidate: 60 }, // 60-секундное кэширование
-	});
-
-	return await response.json();
-}
-```
-
-### FSD Правила Импортов
-
-```typescript
-// ✅ Правильные импорты (снизу вверх)
-// app → widgets → features → entities → shared
-
-// В app слое (страницы)
-import { AnalyticsWidget } from "@/widgets/dashboard";
-import { getFeatureFlags } from "@/entities/feature-flag";
-import { LogoutButton } from "@/features/auth";
-
-// В widgets слое
-import { AdminPanel } from "@/features/admin";
-import { getFeatureFlags } from "@/entities/feature-flag";
-
-// В features слое
-import { loginUser } from "@/entities/user";
-import { Button } from "@/shared/ui";
-
-// ❌ Неправильные импорты (сверху вниз)
-// shared → entities → features → widgets → app
-
-// В shared слое НЕ должно быть импортов из других слоев
-// В entities слое НЕ должно быть импортов из features/widgets/app
-```
-
-### Система Кэширования
-
-#### Next.js Server-Side Caching
-
-- **Директива**: `next: { revalidate: 60 }` для 60-секундного кэширования
-- **Пользовательское кэширование**: Каждый пользователь имеет отдельный кэш на основе Authorization header
-- **Автоматическая инвалидация**: Кэш обновляется каждые 60 секунд
-
-#### Server-Side Headers
-
-```typescript
-// server/src/controllers/auth.controller.ts
-res.setHeader("Cache-Control", "private, max-age=60");
-res.setHeader("ETag", `"${req.user?.id || "anonymous"}-${Math.floor(Date.now() / 60000)}"`);
-```
-
-#### Логирование и Мониторинг
-
-- **Счетчик вызовов**: Отслеживание количества обращений к `/api/flags`
-- **Детальное логирование**: Информация о пользователе, токене и возвращаемых флагах
-- **Отладка кэширования**: Логи для понимания работы кэш-системы
-
-### Условный Рендеринг
-
-```typescript
-// app/page.tsx
-import { Suspense } from "react";
-import { getFeatureFlags } from "@/entities/feature-flag";
-import { AnalyticsWidget, FeatureFlagsList } from "@/widgets/dashboard";
-
-async function FeatureFlagsContent() {
-	const flags = await getFeatureFlags();
-
-	return (
-		<>
-			{flags.canViewAnalytics && <AnalyticsWidget />}
-			<FeatureFlagsList flags={flags} />
-		</>
-	);
-}
-
-export default function HomePage() {
-	return (
-		<div className="container mx-auto p-8">
-			<h1 className="text-3xl font-bold mb-8">Welcome to Feature Flags Demo</h1>
-			<Suspense fallback={<div>Loading feature flags...</div>}>
-				<FeatureFlagsContent />
-			</Suspense>
-		</div>
-	);
-}
-```
-
-### Композиция Компонентов
-
-```typescript
-// widgets/dashboard/ui/DashboardContent.tsx
-import { getFeatureFlags } from "@/entities/feature-flag";
-import { AdminPanel } from "@/features/admin";
-import { AnalyticsWidget, FeatureFlagsList } from "./";
-
-async function DashboardContent() {
-	const flags = await getFeatureFlags();
-
-	return (
-		<>
-			{flags.canViewAnalytics && <AnalyticsWidget />}
-			{flags.showAdminDashboard ? (
-				<AdminPanel />
-			) : (
-				<div className="bg-gray-100 p-6 rounded-lg">
-					<h2 className="text-xl font-semibold mb-4">Regular Dashboard</h2>
-					<p>Welcome to your dashboard! You have standard user access.</p>
-				</div>
-			)}
-			<FeatureFlagsList flags={flags} />
-		</>
-	);
-}
-```
-
-## База Данных
-
-### Схема (Prisma)
-
-```prisma
-enum Role {
-  ADMIN
-  EDITOR
-  VIEWER
-}
-
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  role      Role     @default(VIEWER)
-  createdAt DateTime @default(now())
-}
-```
-
-### Роли и Права Доступа
-
-| Роль   | canViewAnalytics | canEditContent | showAdminDashboard | canAccessSettings |
+| Role   | canViewAnalytics | canEditContent | showAdminDashboard | canAccessSettings |
 | ------ | ---------------- | -------------- | ------------------ | ----------------- |
 | VIEWER | ❌               | ❌             | ❌                 | ❌                |
 | EDITOR | ✅               | ✅             | ❌                 | ✅                |
 | ADMIN  | ✅               | ✅             | ✅                 | ✅                |
 
-## Инфраструктура
+#### Implementation
 
-### Контейнеризация
+- **Server-side rendering**: Flags fetched on server
+- **Caching**: 60-second cache with ETag support
+- **Security**: Role-based access control
+- **Fallback**: Default flags for unauthenticated users
 
-#### Docker Compose
+## Frontend Architecture
 
-```yaml
-services:
-  postgres: # База данных
-  server: # Express.js API
-  client: # Next.js фронтенд
+### Feature-Sliced Design (FSD) Structure
+
+```
+client/src/
+├── app/                    # Next.js App Router (pages)
+│   ├── layout.tsx         # Root layout with Header
+│   ├── page.tsx           # Home page
+│   ├── ui/                # UI components for home page
+│   │   └── FeatureFlagsList.tsx
+│   ├── login/page.tsx     # Login page
+│   ├── register/page.tsx  # Registration page
+│   ├── dashboard/         # Dashboard page
+│   │   ├── page.tsx       # Dashboard page
+│   │   └── ui/            # UI components for dashboard
+│   │       ├── DashboardContent.tsx
+│   │       ├── DashboardWrapper.tsx
+│   │       ├── AnalyticsWidget.tsx
+│   │       └── index.ts
+│   └── settings/page.tsx  # Settings page
+├── features/             # Features layer
+│   ├── auth/            # Authentication
+│   │   └── ui/
+│   │       ├── LoginForm.tsx
+│   │       ├── RegisterForm.tsx
+│   │       └── LogoutButton.tsx
+│   └── admin/           # Admin functionality
+│       └── ui/
+│           └── AdminPanel.tsx
+├── entities/            # Entities layer
+│   ├── user/           # User entity
+│   │   ├── api/
+│   │   │   └── userApi.ts
+│   │   └── model/
+│   │       └── types.ts
+│   └── feature-flag/   # Feature flag entity
+│       ├── api/
+│       │   └── flagsApi.ts
+│       └── model/
+│           └── types.ts
+└── shared/             # Shared layer
+    ├── ui/             # UI components
+    │   ├── button/
+    │   │   └── Button.tsx
+    │   └── spinner/
+    │       └── Spinner.tsx
+    ├── lib/            # Utilities
+    │   ├── auth.ts
+    │   ├── flags.ts
+    │   └── utils.ts
+    └── api/            # API functions
+        └── auth.ts
 ```
 
-#### Multi-stage Dockerfiles
+### FSD Layers
 
-- **Бэкенд**: Node.js → Build → Runtime
-- **Фронтенд**: Node.js → Build → Standalone Runtime
+#### 1. App Layer (`/client/src/app/`)
 
-### CI/CD
+- **Responsibility**: Next.js App Router pages and routing
+- **Files**: `page.tsx`, `layout.tsx`, `login/page.tsx`, etc.
+- **Type**: Server components
+- **Rules**: Direct composition from features and entities
+- **Features**: 
+  - Header integrated into `layout.tsx`
+  - Page-specific components in `ui/` folder
+  - Each component in separate file
+  - No widgets layer - all components are page-specific
 
-#### GitHub Actions
+#### 2. Features Layer (`/client/src/features/`)
 
-- **Валидация**: Сборка Docker образов
-- **Тестирование**: Проверка совместимости
-- **Безопасность**: Сканирование зависимостей
+- **Responsibility**: Business functions and scenarios
+- **Files**:
+  - `auth/` - Authentication (LoginForm, RegisterForm, LogoutButton)
+  - `admin/` - Admin functionality (AdminPanel)
+- **Type**: Mixed (server and client components)
+- **Rules**: Business logic implementation, can use entities and shared
 
-### Развертывание
+#### 3. Entities Layer (`/client/src/entities/`)
 
-#### Production
+- **Responsibility**: Business entities and data models
+- **Files**:
+  - `user/` - User entity (userApi, types)
+  - `feature-flag/` - Feature flag entity (flagsApi, types)
+- **Type**: Mixed (server and client components)
+- **Rules**: Data models and API, can use shared
 
-- **Бэкенд**: Render (Docker)
-- **Фронтенд**: Vercel (Next.js)
-- **База данных**: Neon (PostgreSQL)
+#### 4. Shared Layer (`/client/src/shared/`)
 
-#### Development
+- **Responsibility**: Reusable utilities and components
+- **Files**:
+  - `ui/` - UI components (Button, Spinner)
+  - `lib/` - Utilities (auth, flags, utils)
+  - `api/` - API functions (auth)
+- **Type**: Mixed (server and client components)
+- **Rules**: No dependencies on other layers
 
-- **Локально**: Docker Compose
-- **База данных**: PostgreSQL в контейнере
+### Component Types
 
-## Безопасность
+#### Server Components (Default)
 
-### Аутентификация
+- **Usage**: Data fetching, static content
+- **Examples**: `DashboardContent`, `FeatureFlagsList`
+- **Benefits**: Better performance, SEO-friendly
 
-- **JWT токены** в httpOnly cookies
-- **Хэширование паролей** с bcrypt
-- **CORS** настроен для продакшена
+#### Client Components
 
-### Настройки Cookie
+- **Usage**: Interactivity, browser APIs
+- **Examples**: `LoginForm`, `LogoutButton`
+- **Directive**: `'use client'`
 
-#### Development (локальная разработка)
+### Import Rules
 
-```typescript
-{
-  httpOnly: true,
-  secure: false,        // HTTP разрешен для localhost
-  sameSite: "lax",     // Более мягкие ограничения
-  path: "/"
-}
-```
+#### Allowed Imports
 
-#### Production (продакшен)
+- **App layer**: Can import from features, entities, shared
+- **Features layer**: Can import from entities, shared
+- **Entities layer**: Can import from shared
+- **Shared layer**: Cannot import from other layers
 
-```typescript
-{
-  httpOnly: true,
-  secure: true,         // Только HTTPS
-  sameSite: "strict",  // Строгие ограничения CSRF
-  path: "/"
-}
-```
+#### Forbidden Imports
 
-### Авторизация
+- **Cross-layer imports**: Features cannot import from app
+- **Circular dependencies**: Any circular imports are forbidden
+- **Direct file imports**: Use index.ts files for clean imports
 
-- **Роли пользователей** определяют доступ
-- **Фича-флаги** контролируют UI
-- **Серверная валидация** всех запросов
+## Caching Strategy
 
-### Защита от атак
+### Server-Side Caching
 
-- **CSRF**: SameSite cookies
-- **XSS**: HttpOnly cookies
-- **Man-in-the-middle**: Secure flag в production
-- **Session hijacking**: JWT с ограниченным временем жизни
+- **Feature flags**: 60-second cache with ETag
+- **User data**: No caching (always fresh)
+- **Static assets**: Browser caching
 
-## Производительность
+### Client-Side Caching
 
-### Кэширование
+- **Next.js cache**: Automatic page caching
+- **API responses**: Custom caching for feature flags
+- **Component state**: React state management
 
-#### Next.js Server-Side Caching
+## Security
 
-- **Фича-флаги**: `next: { revalidate: 60 }` для 60-секундного кэширования
-- **Пользовательское кэширование**: Отдельный кэш для каждого пользователя на основе Authorization header
-- **Автоматическая инвалидация**: Кэш обновляется каждые 60 секунд
+### Authentication
 
-#### HTTP Caching Headers
+- **JWT tokens**: Secure token-based authentication
+- **HttpOnly cookies**: XSS protection
+- **CSRF protection**: SameSite cookie attribute
+- **Secure headers**: Production security settings
 
-- **Cache-Control**: `private, max-age=60` для серверных ответов
-- **ETag**: Пользователь-специфичные теги для оптимизации кэширования
-- **304 Not Modified**: Поддержка условных запросов
+### Authorization
 
-#### Database
+- **Role-based access**: ADMIN, EDITOR, VIEWER roles
+- **Feature flags**: Server-side access control
+- **API protection**: Authentication required for sensitive endpoints
 
-- **Prisma**: Connection pooling для оптимизации подключений к БД
-- **Docker**: Multi-stage builds для минимизации размера образов
+## Performance
 
-### Масштабируемость
+### Optimization
 
-- **Микросервисная архитектура**: Бэкенд и фронтенд разделены
-- **Горизонтальное масштабирование**: Docker контейнеры
-- **CDN**: Vercel для статических ресурсов
+- **Server components**: Reduced client-side JavaScript
+- **Code splitting**: Automatic Next.js code splitting
+- **Image optimization**: Next.js Image component
+- **Caching**: Multiple caching layers
 
-## Мониторинг и Логирование
+### Monitoring
 
-### Логирование
+- **API logging**: Detailed request/response logging
+- **Error tracking**: Comprehensive error handling
+- **Performance metrics**: Built-in Next.js analytics
 
-#### Сервер (Express.js)
+## Development Guidelines
 
-- **API вызовы**: Детальное логирование всех обращений к `/api/flags`
-- **Счетчик запросов**: Отслеживание количества вызовов для каждого пользователя
-- **Информация о пользователе**: Роль, email, ID для отладки
-- **Токены**: Логирование первых символов токена для безопасности
+### Code Standards
 
-#### Клиент (Next.js)
+- **TypeScript**: Strict type checking
+- **ESLint**: Code quality enforcement
+- **Prettier**: Code formatting
+- **English only**: All code in English
 
-- **Кэширование**: Логи для понимания работы кэш-системы
-- **Ошибки**: Обработка и логирование ошибок API
-- **Состояние загрузки**: Отслеживание состояний UI
+### Testing
 
-### Отладка
+- **Unit tests**: Component and function testing
+- **Integration tests**: API endpoint testing
+- **E2E tests**: Full application testing
 
-#### Development
+### Deployment
 
-- **Hot reload**: Автоматическая перезагрузка при изменениях
-- **Детальные логи**: Подробная информация для разработки
-- **Кэш отладка**: Логи для понимания работы кэширования
+- **Docker**: Containerized deployment
+- **Environment variables**: Secure configuration
+- **Database migrations**: Prisma migration system
+- **CI/CD**: Automated deployment pipeline
 
-#### Production
+## Troubleshooting
 
-- **Структурированные логи**: JSON формат для анализа
-- **Мониторинг производительности**: Отслеживание времени ответа API
-- **Ошибки**: Централизованное логирование ошибок
+### Common Issues
 
-## Преимущества FSD Архитектуры
+- **Authentication errors**: Check cookie settings and CORS
+- **Feature flag issues**: Verify role permissions and caching
+- **Build errors**: Check TypeScript and import paths
+- **Performance issues**: Monitor caching and component rendering
 
-### 1. Четкое Разделение Ответственности
+### Debug Tools
 
-- **Слоистая структура**: Каждый слой имеет свою роль и не может зависеть от вышестоящих
-- **Изоляция бизнес-логики**: Features содержат только бизнес-сценарии
-- **Переиспользование**: Entities и Shared можно использовать везде
-
-### 2. Масштабируемость
-
-- **Модульность**: Легко добавлять новые features и widgets
-- **Независимость**: Изменения в одном слое не влияют на другие
-- **Команды**: Разные команды могут работать с разными слоями
-
-### 3. Тестируемость
-
-- **Изоляция**: Каждый слой можно тестировать независимо
-- **Моки**: Легко создавать моки для зависимостей
-- **Unit тесты**: Четкие границы для unit тестов
-
-### 4. Поддерживаемость
-
-- **Поиск кода**: Легко найти нужный компонент по его назначению
-- **Рефакторинг**: Безопасные изменения в рамках слоя
-- **Документация**: Структура сама документирует архитектуру
-
-### 5. Next.js Совместимость
-
-- **App Router**: Полная совместимость с Next.js 13+ App Router
-- **Server Components**: Серверные компоненты по умолчанию
-- **Client Components**: Минимальное использование клиентского кода
-
-## Заключение
-
-Архитектура обеспечивает:
-
-- ✅ **Чистоту кода** через FSD разделение ответственности
-- ✅ **Масштабируемость** через модульную структуру
-- ✅ **Безопасность** через ролевую модель
-- ✅ **Производительность** через серверный рендеринг
-- ✅ **Поддерживаемость** через четкую FSD структуру
-- ✅ **Тестируемость** через изолированные слои
+- **Server logs**: Detailed API request logging
+- **Browser dev tools**: Client-side debugging
+- **Prisma Studio**: Database inspection
+- **Next.js dev tools**: Performance profiling

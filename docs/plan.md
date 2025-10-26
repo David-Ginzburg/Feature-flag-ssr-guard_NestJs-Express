@@ -1,49 +1,49 @@
-### **Детальный План Реализации Full-Stack Приложения с Фича-Флагами**
+### **Detailed Implementation Plan for Full-Stack Application with Feature Flags**
 
-**Цель:** Создать full-stack приложение с серверным рендерингом фича-флагов, следуя архитектурным правилам и требованиям.
+**Goal:** Create a full-stack application with server-side feature flag rendering, following architectural rules and requirements.
 
 ---
 
-## **Фаза 1: Инициализация проекта и настройка окружения**
+## **Phase 1: Project Initialization and Environment Setup**
 
-### **Шаг 1.1: Создание базовой структуры каталогов**
+### **Step 1.1: Create Basic Directory Structure**
 
 ```bash
 mkdir -p server client .github/workflows
 ```
 
-### **Шаг 1.2: Инициализация бэкенд-проекта (`/server`)**
+### **Step 1.2: Initialize Backend Project (`/server`)**
 
-**1.2.1: Настройка Node.js проекта**
+**1.2.1: Setup Node.js Project**
 
 ```bash
 cd server
 npm init -y
 ```
 
-**1.2.2: Установка зависимостей**
+**1.2.2: Install Dependencies**
 
 ```bash
-# Основные зависимости
+# Main dependencies
 npm install express cors cookie-parser jsonwebtoken bcryptjs @prisma/client pg
 
-# Dev зависимости
+# Dev dependencies
 npm install -D typescript @types/express @types/cors @types/cookie-parser @types/jsonwebtoken @types/bcryptjs @types/node ts-node-dev prisma
 ```
 
-**1.2.3: Настройка TypeScript**
+**1.2.3: Setup TypeScript**
 
 ```bash
 npx tsc --init
 ```
 
-**1.2.4: Настройка Prisma**
+**1.2.4: Setup Prisma**
 
 ```bash
 npx prisma init
 ```
 
-**1.2.5: Обновление package.json**
+**1.2.5: Update package.json**
 
 ```json
 {
@@ -57,16 +57,16 @@ npx prisma init
 }
 ```
 
-### **Шаг 1.3: Инициализация фронтенд-проекта (`/client`)**
+### **Step 1.3: Initialize Frontend Project (`/client`)**
 
-**1.3.1: Создание Next.js 16 приложения**
+**1.3.1: Create Next.js 16 Application**
 
 ```bash
 cd ../client
 npx create-next-app@latest . --ts --tailwind --eslint --app --src-dir --import-alias "@/*" --yes
 ```
 
-**1.3.2: Настройка next.config.mjs**
+**1.3.2: Configure next.config.mjs**
 
 ```javascript
 /** @type {import('next').NextConfig} */
@@ -79,7 +79,7 @@ const nextConfig = {
 };
 ```
 
-### **Шаг 1.4: Создание корневых конфигурационных файлов**
+### **Step 1.4: Create Root Configuration Files**
 
 **1.4.1: .gitignore**
 
@@ -115,7 +115,7 @@ yarn-error.log*
 Thumbs.db
 ```
 
-**1.4.2: .env (корневой)**
+**1.4.2: .env (root)**
 
 ```env
 # Database
@@ -147,11 +147,11 @@ services:
 
 ---
 
-## **Фаза 2: Реализация Бэкенда (Express.js)**
+## **Phase 2: Backend Implementation (Express.js)**
 
-### **Шаг 2.1: Настройка схемы базы данных**
+### **Step 2.1: Setup Database Schema**
 
-**2.1.1: Обновление schema.prisma**
+**2.1.1: Update schema.prisma**
 
 ```prisma
 generator client {
@@ -178,16 +178,16 @@ model User {
 }
 ```
 
-**2.1.2: Генерация Prisma Client**
+**2.1.2: Generate Prisma Client**
 
 ```bash
 cd server
 npx prisma generate
 ```
 
-### **Шаг 2.2: Создание архитектуры бэкенда**
+### **Step 2.2: Create Backend Architecture**
 
-**2.2.1: Структура каталогов**
+**2.2.1: Directory Structure**
 
 ```
 server/src/
@@ -204,7 +204,7 @@ server/src/
 └── index.ts
 ```
 
-**2.2.2: lib/prisma.ts (синглтон Prisma Client)**
+**2.2.2: lib/prisma.ts (Prisma Client Singleton)**
 
 ```typescript
 import { PrismaClient } from "@prisma/client";
@@ -218,7 +218,7 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 ```
 
-**2.2.3: services/auth.service.ts (бизнес-логика)**
+**2.2.3: services/auth.service.ts (Business Logic)**
 
 ```typescript
 import bcrypt from "bcryptjs";
@@ -259,7 +259,7 @@ export class AuthService {
 }
 ```
 
-**2.2.4: controllers/auth.controller.ts (обработка HTTP)**
+**2.2.4: controllers/auth.controller.ts (HTTP Handling)**
 
 ```typescript
 import { Request, Response } from "express";
@@ -357,7 +357,7 @@ router.get("/flags", authMiddleware, AuthController.getFlags);
 export default router;
 ```
 
-**2.2.7: index.ts (главный файл сервера)**
+**2.2.7: index.ts (Main Server File)**
 
 ```typescript
 import express from "express";
@@ -387,9 +387,9 @@ app.listen(PORT, () => {
 
 ---
 
-## **Фаза 3: Реализация Фронтенда (Next.js)**
+## **Phase 3: Frontend Implementation (Next.js)**
 
-### **Шаг 3.1: Настройка функции получения флагов**
+### **Step 3.1: Setup Feature Flags Function**
 
 **3.1.1: lib/flags.ts**
 
@@ -419,7 +419,7 @@ export async function getFeatureFlags() {
 }
 ```
 
-### **Шаг 3.2: Создание страниц аутентификации**
+### **Step 3.2: Create Authentication Pages**
 
 **3.2.1: app/login/page.tsx**
 
@@ -569,9 +569,9 @@ export default function RegisterPage() {
 }
 ```
 
-### **Шаг 3.3: Создание страниц с условным рендерингом**
+### **Step 3.3: Create Pages with Conditional Rendering**
 
-**3.3.1: app/page.tsx (главная страница)**
+**3.3.1: app/page.tsx (Home Page)**
 
 ```typescript
 import { getFeatureFlags } from "@/lib/flags";
@@ -655,7 +655,7 @@ export default async function SettingsPage() {
 }
 ```
 
-### **Шаг 3.4: Создание компонентов**
+### **Step 3.4: Create Components**
 
 **3.4.1: components/AnalyticsWidget.tsx**
 
@@ -770,9 +770,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ---
 
-## **Фаза 4: Контейнеризация и CI/CD**
+## **Phase 4: Containerization and CI/CD**
 
-### **Шаг 4.1: Docker конфигурация**
+### **Step 4.1: Docker Configuration**
 
 **4.1.1: server/Dockerfile**
 
@@ -862,7 +862,7 @@ volumes:
   postgres_data:
 ```
 
-### **Шаг 4.2: GitHub Actions CI/CD**
+### **Step 4.2: GitHub Actions CI/CD**
 
 **4.2.1: .github/workflows/docker-build.yml**
 
@@ -904,6 +904,6 @@ jobs:
 
 ---
 
-## **Готово к реализации!**
+## **Ready for Implementation!**
 
-Теперь у нас есть детальный план с конкретными шагами. Приступаем к реализации с Фазы 1.
+Now we have a detailed plan with specific steps. Let's start implementation with Phase 1.

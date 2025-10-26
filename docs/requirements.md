@@ -1,32 +1,32 @@
-# Технические Требования: Full-Stack Приложение с Фича-Флагами
+# Technical Requirements: Full-Stack Application with Feature Flags
 
-## 1. Обзор Проекта
+## 1. Project Overview
 
-Этот документ описывает технические требования для создания full-stack приложения. Приложение будет включать бэкенд на Express.js и фронтенд на Next.js 16. Ключевой функционал — аутентификация пользователей по ролям и управление доступом к UI-компонентам с помощью серверных фича-флагов.
+This document describes technical requirements for creating a full-stack application. The application will include an Express.js backend and a Next.js 16 frontend. Key functionality includes user authentication by roles and UI component access management using server-side feature flags.
 
-### 1.1. Архитектура
+### 1.1. Architecture
 
-- **Бэкенд (`/server`):** REST API на Express.js, отвечающий за аутентификацию, управление пользователями и предоставление фича-флагов.
-- **Фронтенд (`/client`):** Серверный рендеринг (SSR) на Next.js. UI динамически изменяется на сервере в зависимости от фича-флагов.
-- **База Данных:** Облачный PostgreSQL (Neon), управляемый через Prisma ORM.
-- **Развертывание:**
-  - Бэкенд развертывается на **Render** из Docker-образа.
-  - Фронтенд развертывается на **Vercel**.
-- **Локальная разработка:** Полностью контейнеризирована с помощью **Docker Compose**.
+- **Backend (`/server`):** REST API on Express.js, responsible for authentication, user management, and providing feature flags.
+- **Frontend (`/client`):** Server-side rendering (SSR) on Next.js. UI dynamically changes on the server based on feature flags.
+- **Database:** Cloud PostgreSQL (Neon), managed through Prisma ORM.
+- **Deployment:**
+  - Backend deployed on **Render** from Docker image.
+  - Frontend deployed on **Vercel**.
+- **Local development:** Fully containerized with **Docker Compose**.
 
-## 2. Спецификации Бэкенда (`/server`)
+## 2. Backend Specifications (`/server`)
 
-### 2.1. Технологический Стек
+### 2.1. Technology Stack
 
 - Node.js
 - Express.js
 - TypeScript
-- Prisma (ORM для PostgreSQL)
-- `jsonwebtoken` для создания JWT
-- `bcryptjs` для хэширования паролей
-- `cookie-parser` для работы с cookie
+- Prisma (ORM for PostgreSQL)
+- `jsonwebtoken` for JWT creation
+- `bcryptjs` for password hashing
+- `cookie-parser` for cookie handling
 
-### 2.2. Схема Базы Данных (`schema.prisma`)
+### 2.2. Database Schema (`schema.prisma`)
 
 ```prisma
 generator client {
@@ -53,88 +53,88 @@ model User {
 }
 ```
 
-### 2.3. Определения API Эндпоинтов
+### 2.3. API Endpoint Definitions
 
 #### `POST /api/register`
 
-- **Описание:** Регистрация нового пользователя.
-- **Тело запроса (Request Body):** `{ "email": "string", "password": "string", "role": "ADMIN" | "EDITOR" | "VIEWER" }`
-- **Ответ (Success):** `201 Created` с телом `{ "id": "string", "email": "string", "role": "string" }`.
-- **Действия:** Хэширует пароль, создает запись в таблице `User`.
+- **Description:** Register a new user.
+- **Request Body:** `{ "email": "string", "password": "string", "role": "ADMIN" | "EDITOR" | "VIEWER" }`
+- **Success Response:** `201 Created` with body `{ "id": "string", "email": "string", "role": "string" }`.
+- **Actions:** Hashes password, creates record in `User` table.
 
 #### `POST /api/login`
 
-- **Описание:** Аутентификация пользователя.
-- **Тело запроса (Request Body):** `{ "email": "string", "password": "string" }`
-- **Ответ (Success):** `200 OK` с телом `{ "id": "string", "email": "string", "role": "string" }`. Устанавливает `httpOnly` cookie с именем `auth_token`, содержащий JWT.
-- **Ответ (Error):** `401 Unauthorized`.
-- **Действия:** Находит пользователя, сравнивает хэш пароля, генерирует JWT.
+- **Description:** Authenticate user.
+- **Request Body:** `{ "email": "string", "password": "string" }`
+- **Success Response:** `200 OK` with body `{ "id": "string", "email": "string", "role": "string" }`. Sets `httpOnly` cookie named `auth_token` containing JWT.
+- **Error Response:** `401 Unauthorized`.
+- **Actions:** Finds user, compares password hash, generates JWT.
 
 #### `GET /api/me`
 
-- **Описание:** Получение данных о текущем аутентифицированном пользователе.
-- **Аутентификация:** Требует наличия валидного `auth_token` в cookie.
-- **Ответ (Success):** `200 OK` с телом `{ "id": "string", "email": "string", "role": "string" }`.
-- **Ответ (Error):** `401 Unauthorized`.
+- **Description:** Get current authenticated user data.
+- **Authentication:** Requires valid `auth_token` in cookie.
+- **Success Response:** `200 OK` with body `{ "id": "string", "email": "string", "role": "string" }`.
+- **Error Response:** `401 Unauthorized`.
 
 #### `GET /api/flags`
 
-- **Описание:** Получение набора фича-флагов для текущего пользователя.
-- **Аутентификация:** Требует наличия валидного `auth_token` в cookie.
-- **Ответ (Success):** `200 OK` с телом, соответствующим роли пользователя (например, `{ "canViewAnalytics": true, "canEditContent": true, ... }`).
-- **Ответ (Guest):** Если токен отсутствует или невалиден, возвращает `200 OK` с набором флагов по умолчанию для гостя (все `false`).
+- **Description:** Get feature flags set for current user.
+- **Authentication:** Requires valid `auth_token` in cookie.
+- **Success Response:** `200 OK` with body corresponding to user role (e.g., `{ "canViewAnalytics": true, "canEditContent": true, ... }`).
+- **Guest Response:** If token is missing or invalid, returns `200 OK` with default guest flag set (all `false`).
 
-## 3. Спецификации Фронтенда (`/client`)
+## 3. Frontend Specifications (`/client`)
 
-### 3.1. Технологический Стек
+### 3.1. Technology Stack
 
 - Next.js 16 (App Router)
 - React 18
 - TypeScript
 - Tailwind CSS
 
-### 3.2. Ключевая Логика
+### 3.2. Key Logic
 
 #### `lib/flags.ts`
 
-- **Функция `getFeatureFlags()`:**
-  - Должна использовать директиву `'use cache: private'`.
-  - Должна быть асинхронной.
-  - Должна читать `cookies` из `next/headers` и передавать их в `fetch`-запросе к бэкенду (`GET /api/flags`).
-  - URL бэкенда должен браться из переменной окружения `process.env.NEXT_PUBLIC_API_URL`.
+- **Function `getFeatureFlags()`:**
+  - Should use `'use cache: private'` directive.
+  - Should be asynchronous.
+  - Should read `cookies` from `next/headers` and pass them in `fetch` request to backend (`GET /api/flags`).
+  - Backend URL should be taken from environment variable `process.env.NEXT_PUBLIC_API_URL`.
 
-### 3.3. Структура Страниц
+### 3.3. Page Structure
 
-| Роут         | Тип Компонента | Описание                                                                                        |
-| :----------- | :------------- | :---------------------------------------------------------------------------------------------- |
-| `/`          | Серверный      | Главная страница. Показывает/скрывает `<AnalyticsWidget />` на основе флага `canViewAnalytics`. |
-| `/dashboard` | Серверный      | Показывает `<AdminPanel />` или обычный дашборд на основе флага `showAdminDashboard`.           |
-| `/settings`  | Серверный      | Показывает форму настроек только при наличии флага `canAccessSettings`.                         |
-| `/login`     | Клиентский     | Страница с формой для входа.                                                                    |
-| `/register`  | Клиентский     | Страница с формой для регистрации.                                                              |
+| Route        | Component Type | Description                                                                                        |
+| :----------- | :------------- | :------------------------------------------------------------------------------------------------ |
+| `/`          | Server         | Home page. Shows/hides `<AnalyticsWidget />` based on `canViewAnalytics` flag.                   |
+| `/dashboard` | Server         | Shows `<AdminPanel />` or regular dashboard based on `showAdminDashboard` flag.                  |
+| `/settings`  | Server         | Shows settings form only when `canAccessSettings` flag is present.                               |
+| `/login`     | Client         | Page with login form.                                                                             |
+| `/register`  | Client         | Page with registration form.                                                                      |
 
-## 4. Инфраструктура и Развертывание
+## 4. Infrastructure and Deployment
 
-### 4.1. Локальная Разработка
+### 4.1. Local Development
 
-- Запуск всего стека осуществляется одной командой `docker-compose up`.
-- Бэкенд доступен на `localhost:4000`.
-- Фронтенд доступен на `localhost:3000`.
-- Строка подключения к БД Neon должна храниться в корневом `.env` файле, который не коммитится в Git.
+- Entire stack runs with single command `docker-compose up`.
+- Backend available on `localhost:4000`.
+- Frontend available on `localhost:3000`.
+- Neon DB connection string should be stored in root `.env` file, not committed to Git.
 
 ### 4.2. CI/CD (GitHub Actions)
 
-- Воркфлоу `.github/workflows/docker-build.yml` должен запускаться при пуше в `main`.
-- Его задача — валидация того, что Docker-образы успешно собираются. Он **не деплоит** приложение.
-- Он должен использовать `secrets.DATABASE_URL` из GitHub Secrets для шага `prisma generate`.
+- Workflow `.github/workflows/docker-build.yml` should run on push to `main`.
+- Its task is to validate that Docker images build successfully. It **does not deploy** the application.
+- It should use `secrets.DATABASE_URL` from GitHub Secrets for `prisma generate` step.
 
-### 4.3. Развертывание (Production)
+### 4.3. Production Deployment
 
-- **Бэкенд (Express):**
-  - Деплоится на **Render** с использованием конфигурационного файла `render.yaml`.
-  - Использует бесплатный тариф (`plan: free`).
-  - `DATABASE_URL` и `JWT_SECRET` должны быть настроены как **Secrets** в дашборде Render.
-- **Фронтенд (Next.js):**
-  - Деплоится на **Vercel**.
-  - В настройках проекта Vercel указывается **Root Directory** как `client`.
-  - В настройках проекта Vercel должна быть установлена переменная окружения `NEXT_PUBLIC_API_URL`, указывающая на публичный URL развернутого на Render бэкенда.
+- **Backend (Express):**
+  - Deployed on **Render** using configuration file `render.yaml`.
+  - Uses free tier (`plan: free`).
+  - `DATABASE_URL` and `JWT_SECRET` should be configured as **Secrets** in Render dashboard.
+- **Frontend (Next.js):**
+  - Deployed on **Vercel**.
+  - In Vercel project settings, **Root Directory** is set to `client`.
+  - In Vercel project settings, environment variable `NEXT_PUBLIC_API_URL` should be set, pointing to public URL of Render-deployed backend.

@@ -25,95 +25,95 @@ This ensures international collaboration and code maintainability.
 
 ## 3. Backend Architecture (Express.js)
 
-Для бэкенда применяется **Многоуровневая архитектура (Layered Architecture)**. Этот подход обеспечивает строгое разделение ответственности (Separation of Concerns), что упрощает тестирование, рефакторинг и понимание кода.
+For the backend, **Layered Architecture** is applied. This approach ensures strict separation of concerns (Separation of Concerns), which simplifies testing, refactoring, and code understanding.
 
-**Поток запроса:** `Request -> Routes -> Controllers -> Services -> Data Access Layer (Prisma)`
+**Request Flow:** `Request -> Routes -> Controllers -> Services -> Data Access Layer (Prisma)`
 
-### 2.1. Описание Уровней
+### 3.1. Layer Description
 
-#### 1. Уровень Маршрутизации (Routes)
+#### 1. Routing Layer (Routes)
 
-- **Расположение:** `/server/src/routes`
-- **Ответственность:**
-  - Определение HTTP-эндпоинтов (например, `/api/login`).
-  - Привязка эндпоинтов к HTTP-методам (`GET`, `POST`, и т.д.).
-  - (Опционально) Валидация входящих данных (тела запроса, параметров).
-  - Передача управления на соответствующий метод Контроллера.
-- **Правила:** Не содержит бизнес-логики. Только маршрутизация.
+- **Location:** `/server/src/routes`
+- **Responsibilities:**
+  - Define HTTP endpoints (e.g., `/api/login`)
+  - Bind endpoints to HTTP methods (`GET`, `POST`, etc.)
+  - (Optional) Validate incoming data (request body, parameters)
+  - Delegate control to the appropriate Controller method
+- **Rules:** No business logic. Only routing.
 
-#### 2. Уровень Контроллеров (Controllers)
+#### 2. Controllers Layer
 
-- **Расположение:** `/server/src/controllers`
-- **Ответственность:**
-  - "Оркестрация" обработки запроса.
-  - Извлечение данных из объектов `request` и `response`.
-  - Вызов одного или нескольких методов Уровня Сервисов.
-  - Формирование и отправка HTTP-ответа (JSON, статус-коды).
-- **Правила:** Не содержит бизнес-логики и прямых запросов к базе данных. Является тонким "клеем" между HTTP-миром и логикой приложения.
+- **Location:** `/server/src/controllers`
+- **Responsibilities:**
+  - "Orchestrate" request processing
+  - Extract data from `request` and `response` objects
+  - Call one or more Service layer methods
+  - Form and send HTTP responses (JSON, status codes)
+- **Rules:** No business logic or direct database queries. Acts as thin "glue" between HTTP world and application logic.
 
-#### 3. Уровень Сервисов (Services)
+#### 3. Services Layer
 
-- **Расположение:** `/server/src/services`
-- **Ответственность:**
-  - **Реализация всей бизнес-логики приложения.**
-  - Координация операций, работа с данными, выполнение вычислений.
-  - Вызов методов Уровня Доступа к Данным для взаимодействия с БД.
-- **Правила:** Полностью независим от HTTP. Не знает о существовании `request` и `response`. Может быть переиспользован в других частях приложения (например, в консольных скриптах).
+- **Location:** `/server/src/services`
+- **Responsibilities:**
+  - **Implement all application business logic**
+  - Coordinate operations, work with data, perform calculations
+  - Call Data Access Layer methods for database interaction
+- **Rules:** Completely independent of HTTP. Doesn't know about `request` and `response`. Can be reused in other parts of the application (e.g., console scripts).
 
-#### 4. Уровень Доступа к Данным (Data Access Layer - DAL)
+#### 4. Data Access Layer (DAL)
 
-- **Реализация:** Prisma Client.
-- **Расположение:** `/server/src/lib/prisma.ts` (синглтон-инстанс).
-- **Ответственность:**
-  - Единственная точка взаимодействия с базой данных.
-  - Выполнение всех CRUD-операций (Create, Read, Update, Delete).
+- **Implementation:** Prisma Client
+- **Location:** `/server/src/lib/prisma.ts` (singleton instance)
+- **Responsibilities:**
+  - Single point of database interaction
+  - Execute all CRUD operations (Create, Read, Update, Delete)
 
 ---
 
-## 3. Архитектура Фронтенда (Next.js & Feature-Sliced Design)
+## 4. Frontend Architecture (Next.js & Feature-Sliced Design)
 
-Для фронтенда применяется методология **Feature-Sliced Design (FSD)**, адаптированная под реалии **Next.js App Router** и его серверно-клиентской модели компонентов.
+For the frontend, **Feature-Sliced Design (FSD)** methodology is applied, adapted for **Next.js App Router** and its server-client component model.
 
-### 3.1. Основные Принципы Адаптации
+### 4.1. Key Adaptation Principles
 
-- **Next.js `app` Directory = FSD `pages` Layer:** Маршрутизация и структура страниц полностью управляются каталогом `app`. Файлы `page.tsx` и `layout.tsx` являются точками входа и композиции для нижележащих слоев.
-- **Server Components по умолчанию:** Все компоненты должны быть Серверными по умолчанию. Директива `'use client'` используется только тогда, когда компонент требует интерактивности или браузерных API (`useState`, `useEffect`, `onClick` и т.д.).
+- **Next.js `app` Directory = FSD `pages` Layer:** Routing and page structure are completely managed by the `app` directory. `page.tsx` and `layout.tsx` files are entry points and composition points for underlying layers.
+- **Server Components by default:** All components should be Server Components by default. The `'use client'` directive is used only when the component requires interactivity or browser APIs (`useState`, `useEffect`, `onClick`, etc.).
 
-### 3.2. Структура Слоев (от верхнего к нижнему)
+### 4.2. Layer Structure (from top to bottom)
 
 #### 1. `app`
 
-- **Расположение:** `/client/src/app`
-- **Ответственность:** Маршрутизация, определение метаданных, композиция страниц из виджетов и фич. Файлы `page.tsx` не должны содержать сложной логики или разметки, их главная задача — собрать UI из готовых блоков.
+- **Location:** `/client/src/app`
+- **Responsibilities:** Routing, metadata definition, page composition from widgets and features. `page.tsx` files should not contain complex logic or markup; their main task is to assemble UI from ready-made blocks.
 
 #### 2. `widgets`
 
-- **Расположение:** `/client/src/widgets`
-- **Ответственность:** Композиционные, самодостаточные блоки UI. Собирают в себе фичи и сущности в единый смысловой блок.
-- **Примеры:** `<Header />`, `<Sidebar />`, `<ProfileCard />`.
-- **Тип:** Часто являются Серверными Компонентами, которые могут принимать интерактивные Клиентские Компоненты в качестве дочерних элементов (`children`).
+- **Location:** `/client/src/widgets`
+- **Responsibilities:** Compositional, self-contained UI blocks. Combine features and entities into a single meaningful block.
+- **Examples:** `<Header />`, `<Sidebar />`, `<ProfileCard />`
+- **Type:** Often Server Components that can accept interactive Client Components as children.
 
 #### 3. `features`
 
-- **Расположение:** `/client/src/features`
-- **Ответственность:** Реализация бизнес-сценариев и пользовательских действий. Этот слой приносит пользу бизнесу.
-- **Примеры:** `<LoginForm />`, `<RegisterForm />`, `<ChangeRoleButton />`.
-- **Тип:** Часто являются Клиентскими Компонентами (`'use client'`), так как содержат состояние и обработчики событий.
+- **Location:** `/client/src/features`
+- **Responsibilities:** Implementation of business scenarios and user actions. This layer brings business value.
+- **Examples:** `<LoginForm />`, `<RegisterForm />`, `<ChangeRoleButton />`
+- **Type:** Often Client Components (`'use client'`) as they contain state and event handlers.
 
 #### 4. `entities`
 
-- **Расположение:** `/client/src/entities`
-- **Ответственность:** Представление бизнес-сущностей. Каркас приложения.
-- **Примеры:** `<UserAvatar user={...} />`, `<RoleBadge role={...} />`.
-- **Тип:** Чаще всего являются Серверными Компонентами, так как просто отображают переданные данные.
+- **Location:** `/client/src/entities`
+- **Responsibilities:** Representation of business entities. Application framework.
+- **Examples:** `<UserAvatar user={...} />`, `<RoleBadge role={...} />`
+- **Type:** Most often Server Components as they simply display passed data.
 
 #### 5. `shared`
 
-- **Расположение:** `/client/src/shared`
-- **Ответственность:** Переиспользуемый код, не имеющий отношения к бизнес-логике.
-- **Подкаталоги:**
-  - `ui/`: UI-кит (например, `<Button />`, `<Input />`, `<Spinner />`). Часто это Клиентские Компоненты.
-  - `lib/`: Вспомогательные функции и утилиты (например, `formatDate`).
-  - `api/`: Функции для взаимодействия с API (в нашем случае, здесь будет находиться `lib/flags.ts`).
-  - `config/`: Конфигурационные файлы.
-- **Правила:** Этот слой не должен зависеть ни от одного из вышележащих слоев.
+- **Location:** `/client/src/shared`
+- **Responsibilities:** Reusable code unrelated to business logic.
+- **Subdirectories:**
+  - `ui/`: UI kit (e.g., `<Button />`, `<Input />`, `<Spinner />`). Often Client Components.
+  - `lib/`: Helper functions and utilities (e.g., `formatDate`)
+  - `api/`: Functions for API interaction (in our case, `lib/flags.ts` will be here)
+  - `config/`: Configuration files
+- **Rules:** This layer should not depend on any of the upper layers.
